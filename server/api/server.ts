@@ -21,7 +21,7 @@ async function start() {
       projectId: "sharikkyiv"
     });
 
-    const coolFilesBucket = gc.bucket("sharikkyiv");
+    const googleBucket = gc.bucket("sharikkyiv");
 
     type contextArgs = ReqResExpress;
 
@@ -29,7 +29,7 @@ async function start() {
       req,
       res,
       prisma,
-      googleBucket: coolFilesBucket
+      googleBucket
     });
 
     const server = new ApolloServer({
@@ -42,6 +42,13 @@ async function start() {
     await server.start();
 
     app.use(graphqlUploadExpress());
+
+    /* if (process.env.NODE_ENV === "production") {
+      app.use("/", express.static(path.join(__dirname, "client", "build")));
+      app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+      });
+    } */
 
     server.applyMiddleware({ app });
 

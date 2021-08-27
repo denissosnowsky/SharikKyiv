@@ -16,7 +16,7 @@ const Product: React.FC<ProductProps> = () => {
         </div>
       </Col>
       <Col className="d-flex flex-column">
-        <div className={s.title}>Букет 'Краса'</div>
+        <div className={s.title}>Букет Краса</div>
         <div className={s.desc}>
           <span>Состав</span>: 6 шаров красного хрома, 1 звезда красная, 1
           сердце синее, 1 фольгированный автомобиль, 1 цифра 100см.

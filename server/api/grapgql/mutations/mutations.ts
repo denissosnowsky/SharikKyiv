@@ -2,7 +2,6 @@ import {
   GraphQLBoolean,
   GraphQLID,
   GraphQLInt,
-  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
@@ -21,6 +20,8 @@ import {
 } from "../types/types";
 import { GraphQLUpload } from "graphql-upload";
 import { v4 as uuidv4 } from "uuid";
+import GraphQLJSON from "graphql-type-json";
+import { sendTelegramMessage } from "../../../services/sendTelegramMessage";
 
 export const Mutation = new GraphQLObjectType({
   name: "Mutation",
@@ -490,18 +491,24 @@ export const Mutation = new GraphQLObjectType({
     },
     allBouquet: {
       type: GraphQLInt,
-      async resolve(_parent, _args, ctx: ApolloServerContext){
+      async resolve(_parent, _args, ctx: ApolloServerContext) {
         return await ctx.prisma.bouquet.count();
-      }
+      },
     },
     allBalloons: {
       type: GraphQLInt,
-      async resolve(_parent, _args, ctx: ApolloServerContext){
+      async resolve(_parent, _args, ctx: ApolloServerContext) {
         return await ctx.prisma.balloon.count();
-      }
+      },
     },
-    /*     sendOrder: {
-        type: 
-    }, */
+    sendOrder: {
+      type: GraphQLBoolean,
+      args: {
+        order: { type: new GraphQLNonNull(GraphQLJSON) },
+      },
+      async resolve(_parent, { order }, _ctx) {
+        return await sendTelegramMessage(order);
+      },
+    },
   },
 });

@@ -15,7 +15,7 @@ const SocialNetBlock: React.FC<SocialNetBlockProps> = ({
 }) => {
   return (
     <div style={{ height: size, width: size, margin: margin }}>
-      <a title={title} href={href} target="_blank">
+      <a title={title} href={href} target="_blank" rel="noreferrer">
         <img
           src={image}
           alt={`Написать в ${title}`}
