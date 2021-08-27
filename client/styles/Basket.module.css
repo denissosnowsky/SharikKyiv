@@ -1,0 +1,25 @@
+.form {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.header {
+  font-size: 25px;
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.submitBtn {
+  width: 50%;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.attention{
+    color: #dc3545;
+    font-size: 13px;
+    align-self: flex-start;
+}

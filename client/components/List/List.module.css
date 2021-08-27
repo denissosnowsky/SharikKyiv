@@ -1,0 +1,7 @@
+.li {
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 400;
+}
