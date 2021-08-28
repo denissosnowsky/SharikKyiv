@@ -5,10 +5,12 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Video from "../components/Layouts/Video/Video";
 import NextNprogress from "nextjs-progressbar";
+import { ApolloProvider } from "@apollo/client";
+import client from "../store/apollo-client";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ApolloProvider client={client}>
       <NextNprogress
         color="#dc3545"
         startPosition={0.3}
@@ -22,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Video src="/video.mp4" shadow={false}>
         <Component {...pageProps} />
       </Video>
-    </>
+    </ApolloProvider>
   );
 }
 export default MyApp;

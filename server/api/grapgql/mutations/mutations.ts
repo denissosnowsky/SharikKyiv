@@ -489,18 +489,6 @@ export const Mutation = new GraphQLObjectType({
         return balloons;
       },
     },
-    allBouquet: {
-      type: GraphQLInt,
-      async resolve(_parent, _args, ctx: ApolloServerContext) {
-        return await ctx.prisma.bouquet.count();
-      },
-    },
-    allBalloons: {
-      type: GraphQLInt,
-      async resolve(_parent, _args, ctx: ApolloServerContext) {
-        return await ctx.prisma.balloon.count();
-      },
-    },
     sendOrder: {
       type: GraphQLBoolean,
       args: {

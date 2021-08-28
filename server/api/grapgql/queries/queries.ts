@@ -48,7 +48,7 @@ export const RootQuery = new GraphQLObjectType({
           take,
           where: { price: { lte: price }, personType, code },
           orderBy: {
-            updatedAt: "desc",
+            createdAt: "desc",
           },
         });
       },
@@ -116,10 +116,22 @@ export const RootQuery = new GraphQLObjectType({
       },
     },
     deliveryPrice: {
-        type: DeliveryPriceType,
-        resolve(_parent, _args, ctx: ApolloServerContext) {
-            return ctx.prisma.deliveryPrice.findFirst();
-        },
-    }
+      type: DeliveryPriceType,
+      resolve(_parent, _args, ctx: ApolloServerContext) {
+        return ctx.prisma.deliveryPrice.findFirst();
+      },
+    },
+    allBouquets: {
+      type: GraphQLInt,
+      resolve(_parent, _args, ctx: ApolloServerContext) {
+        return ctx.prisma.bouquet.count();
+      },
+    },
+    allBalloons: {
+      type: GraphQLInt,
+      resolve(_parent, _args, ctx: ApolloServerContext) {
+        return ctx.prisma.balloon.count();
+      },
+    },
   },
 });
