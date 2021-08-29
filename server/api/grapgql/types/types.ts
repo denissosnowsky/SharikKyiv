@@ -6,6 +6,7 @@ import {
   GraphQLInt,
   GraphQLList,
   GraphQLBoolean,
+  GraphQLNonNull,
 } from "graphql";
 
 import { GraphQLDateTime } from "graphql-iso-date";
@@ -14,16 +15,16 @@ import { ApolloServerContext } from "../../types/ApolloServerContext";
 export const BouquetType: GraphQLObjectType = new GraphQLObjectType({
   name: "Bouquet",
   fields: () => ({
-    id: { type: GraphQLID },
-    createdAt: { type: GraphQLDateTime },
-    updatedAt: { type: GraphQLDateTime },
-    name: { type: GraphQLString },
-    subname: { type: GraphQLString },
-    price: { type: GraphQLString },
-    description: { type: GraphQLString },
-    code: { type: GraphQLInt },
-    image: { type: GraphQLString },
-    personType: { type: PersonType },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    createdAt: { type: new GraphQLNonNull (GraphQLDateTime) },
+    updatedAt: { type: new GraphQLNonNull (GraphQLDateTime) },
+    name: { type: new GraphQLNonNull (GraphQLString) },
+    subname: { type: new GraphQLNonNull (GraphQLString) },
+    price: { type: new GraphQLNonNull (GraphQLString) },
+    description: { type: new GraphQLNonNull (GraphQLString) },
+    code: { type: new GraphQLNonNull (GraphQLInt) },
+    image: { type: new GraphQLNonNull (GraphQLString) },
+    personType: { type: new GraphQLNonNull (PersonType) },
   }),
 });
 
@@ -39,15 +40,15 @@ export const PersonType: GraphQLEnumType = new GraphQLEnumType({
 export const BalloonType: GraphQLObjectType = new GraphQLObjectType({
   name: "Balloon",
   fields: () => ({
-    id: { type: GraphQLID },
-    createdAt: { type: GraphQLDateTime },
-    updatedAt: { type: GraphQLDateTime },
-    name: { type: GraphQLString },
-    subname: { type: GraphQLString },
-    price: { type: GraphQLString },
-    description: { type: GraphQLString },
-    code: { type: GraphQLInt },
-    image: { type: GraphQLString },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    createdAt: { type: new GraphQLNonNull (GraphQLDateTime) },
+    updatedAt: { type: new GraphQLNonNull (GraphQLDateTime) },
+    name: { type: new GraphQLNonNull (GraphQLString) },
+    subname: { type: new GraphQLNonNull (GraphQLString) },
+    price: { type: new GraphQLNonNull (GraphQLString) },
+    description: { type: new GraphQLNonNull (GraphQLString) },
+    code: { type: new GraphQLNonNull (GraphQLInt) },
+    image: { type: new GraphQLNonNull (GraphQLString) },
     category: {
       type: CategoryType,
       resolve(parent, _args, ctx: ApolloServerContext) {
@@ -66,8 +67,8 @@ export const BalloonType: GraphQLObjectType = new GraphQLObjectType({
 export const CategoryType: GraphQLObjectType = new GraphQLObjectType({
   name: "Category",
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    name: { type: new GraphQLNonNull (GraphQLString) },
     balloons: {
       type: GraphQLList(BalloonType),
       resolve(parent, _args, ctx: ApolloServerContext) {
@@ -80,9 +81,9 @@ export const CategoryType: GraphQLObjectType = new GraphQLObjectType({
 export const ColorType: GraphQLObjectType = new GraphQLObjectType({
   name: "Color",
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    cssName: { type: GraphQLString },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    name: { type: new GraphQLNonNull (GraphQLString) },
+    cssName: { type: new GraphQLNonNull (GraphQLString) },
     balloons: {
       type: GraphQLList(BalloonType),
       resolve(parent, _args, ctx: ApolloServerContext) {
@@ -95,35 +96,35 @@ export const ColorType: GraphQLObjectType = new GraphQLObjectType({
 export const AssortmentType: GraphQLObjectType = new GraphQLObjectType({
   name: "Assortment",
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    price: { type: GraphQLString },
-    fixed: { type: GraphQLBoolean },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    name: { type:new GraphQLNonNull ( GraphQLString) },
+    price: { type: new GraphQLNonNull (GraphQLString) },
+    fixed: { type: new GraphQLNonNull (GraphQLBoolean) },
   }),
 });
 
 export const PhoneType: GraphQLObjectType = new GraphQLObjectType({
   name: "Phone",
   fields: () => ({
-    id: { type: GraphQLID },
-    number: { type: GraphQLString },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    number: { type: new GraphQLNonNull (GraphQLString) },
   }),
 });
 
 export const SocialNetType: GraphQLObjectType = new GraphQLObjectType({
   name: "SocialNet",
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    link: { type: GraphQLString },
-    image: { type: GraphQLString },
+    id: { type: new GraphQLNonNull (GraphQLID) },
+    name: { type: new GraphQLNonNull (GraphQLString) },
+    link: { type: new GraphQLNonNull (GraphQLString) },
+    image: { type: new GraphQLNonNull (GraphQLString) },
   }),
 });
 
 export const DeliveryPriceType: GraphQLObjectType = new GraphQLObjectType({
     name: "DeliveryPrice",
     fields: () => ({
-        id: { type: GraphQLID },
-        price: { type: GraphQLString }
+        id: { type: new GraphQLNonNull (GraphQLID) },
+        price: { type: new GraphQLNonNull (GraphQLString) }
     }),
 });

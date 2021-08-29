@@ -6,9 +6,12 @@ import Head from "next/head";
 import Video from "../components/Layouts/Video/Video";
 import NextNprogress from "nextjs-progressbar";
 import { ApolloProvider } from "@apollo/client";
-import client from "../store/apollo-client";
+import { getApolloClient } from "../store/apollo-client";
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const client = getApolloClient();
+
   return (
     <ApolloProvider client={client}>
       <NextNprogress

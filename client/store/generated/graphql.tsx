@@ -24,61 +24,61 @@ export type Scalars = {
 
 export type Assortment = {
   __typename?: 'Assortment';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
-  fixed?: Maybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  price: Scalars['String'];
+  fixed: Scalars['Boolean'];
 };
 
 export type Balloon = {
   __typename?: 'Balloon';
-  id?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-  subname?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['Int']>;
-  image?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  subname: Scalars['String'];
+  price: Scalars['String'];
+  description: Scalars['String'];
+  code: Scalars['Int'];
+  image: Scalars['String'];
   category?: Maybe<Category>;
   color?: Maybe<Color>;
 };
 
 export type Bouquet = {
   __typename?: 'Bouquet';
-  id?: Maybe<Scalars['ID']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  name?: Maybe<Scalars['String']>;
-  subname?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['Int']>;
-  image?: Maybe<Scalars['String']>;
-  personType?: Maybe<Person>;
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  subname: Scalars['String'];
+  price: Scalars['String'];
+  description: Scalars['String'];
+  code: Scalars['Int'];
+  image: Scalars['String'];
+  personType: Person;
 };
 
 export type Category = {
   __typename?: 'Category';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
   balloons?: Maybe<Array<Maybe<Balloon>>>;
 };
 
 export type Color = {
   __typename?: 'Color';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  cssName?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  cssName: Scalars['String'];
   balloons?: Maybe<Array<Maybe<Balloon>>>;
 };
 
 
 export type DeliveryPrice = {
   __typename?: 'DeliveryPrice';
-  id?: Maybe<Scalars['ID']>;
-  price?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  price: Scalars['String'];
 };
 
 
@@ -258,8 +258,8 @@ export enum Person {
 
 export type Phone = {
   __typename?: 'Phone';
-  id?: Maybe<Scalars['ID']>;
-  number?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  number: Scalars['String'];
 };
 
 export type RootQueryType = {
@@ -309,10 +309,10 @@ export type RootQueryTypeBalloonsArgs = {
 
 export type SocialNet = {
   __typename?: 'SocialNet';
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  link: Scalars['String'];
+  image: Scalars['String'];
 };
 
 
@@ -323,7 +323,7 @@ export type AddAssortmentMutationVariables = Exact<{
 }>;
 
 
-export type AddAssortmentMutation = { __typename?: 'Mutation', addAssortment?: Maybe<{ __typename?: 'Assortment', id?: Maybe<string>, name?: Maybe<string>, price?: Maybe<string>, fixed?: Maybe<boolean> }> };
+export type AddAssortmentMutation = { __typename?: 'Mutation', addAssortment?: Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }> };
 
 export type AddBouquetMutationVariables = Exact<{
   name: Scalars['String'];
@@ -336,14 +336,14 @@ export type AddBouquetMutationVariables = Exact<{
 }>;
 
 
-export type AddBouquetMutation = { __typename?: 'Mutation', addBouquet?: Maybe<{ __typename?: 'Bouquet', id?: Maybe<string>, name?: Maybe<string>, subname?: Maybe<string>, price?: Maybe<string>, description?: Maybe<string>, code?: Maybe<number>, image?: Maybe<string>, personType?: Maybe<Person> }> };
+export type AddBouquetMutation = { __typename?: 'Mutation', addBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
 
 export type AddCategoryMutationVariables = Exact<{
   name: Scalars['String'];
 }>;
 
 
-export type AddCategoryMutation = { __typename?: 'Mutation', addCategory?: Maybe<{ __typename?: 'Category', id?: Maybe<string>, name?: Maybe<string> }> };
+export type AddCategoryMutation = { __typename?: 'Mutation', addCategory?: Maybe<{ __typename?: 'Category', id: string, name: string }> };
 
 export type AddColorMutationVariables = Exact<{
   name: Scalars['String'];
@@ -351,21 +351,21 @@ export type AddColorMutationVariables = Exact<{
 }>;
 
 
-export type AddColorMutation = { __typename?: 'Mutation', addColor?: Maybe<{ __typename?: 'Color', id?: Maybe<string>, name?: Maybe<string>, cssName?: Maybe<string> }> };
+export type AddColorMutation = { __typename?: 'Mutation', addColor?: Maybe<{ __typename?: 'Color', id: string, name: string, cssName: string }> };
 
 export type AddDeliveryPriceMutationVariables = Exact<{
   price: Scalars['String'];
 }>;
 
 
-export type AddDeliveryPriceMutation = { __typename?: 'Mutation', addDeliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id?: Maybe<string>, price?: Maybe<string> }> };
+export type AddDeliveryPriceMutation = { __typename?: 'Mutation', addDeliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id: string, price: string }> };
 
 export type AddPhoneMutationVariables = Exact<{
   number: Scalars['String'];
 }>;
 
 
-export type AddPhoneMutation = { __typename?: 'Mutation', addPhone?: Maybe<{ __typename?: 'Phone', id?: Maybe<string>, number?: Maybe<string> }> };
+export type AddPhoneMutation = { __typename?: 'Mutation', addPhone?: Maybe<{ __typename?: 'Phone', id: string, number: string }> };
 
 export type AddSocialNetMutationVariables = Exact<{
   name: Scalars['String'];
@@ -374,7 +374,7 @@ export type AddSocialNetMutationVariables = Exact<{
 }>;
 
 
-export type AddSocialNetMutation = { __typename?: 'Mutation', addSocialNet?: Maybe<{ __typename?: 'SocialNet', id?: Maybe<string>, name?: Maybe<string>, link?: Maybe<string>, image?: Maybe<string> }> };
+export type AddSocialNetMutation = { __typename?: 'Mutation', addSocialNet?: Maybe<{ __typename?: 'SocialNet', id: string, name: string, link: string, image: string }> };
 
 export type ChangeAssortmantMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -384,7 +384,7 @@ export type ChangeAssortmantMutationVariables = Exact<{
 }>;
 
 
-export type ChangeAssortmantMutation = { __typename?: 'Mutation', changeAssortmant?: Maybe<{ __typename?: 'Assortment', id?: Maybe<string>, name?: Maybe<string>, price?: Maybe<string>, fixed?: Maybe<boolean> }> };
+export type ChangeAssortmantMutation = { __typename?: 'Mutation', changeAssortmant?: Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }> };
 
 export type ChangeBouquetMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -398,7 +398,7 @@ export type ChangeBouquetMutationVariables = Exact<{
 }>;
 
 
-export type ChangeBouquetMutation = { __typename?: 'Mutation', changeBouquet?: Maybe<{ __typename?: 'Bouquet', id?: Maybe<string>, name?: Maybe<string>, subname?: Maybe<string>, price?: Maybe<string>, description?: Maybe<string>, code?: Maybe<number>, image?: Maybe<string>, personType?: Maybe<Person> }> };
+export type ChangeBouquetMutation = { __typename?: 'Mutation', changeBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
 
 export type ChangeDeliveryPriceMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -406,7 +406,7 @@ export type ChangeDeliveryPriceMutationVariables = Exact<{
 }>;
 
 
-export type ChangeDeliveryPriceMutation = { __typename?: 'Mutation', changeDeliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id?: Maybe<string>, price?: Maybe<string> }> };
+export type ChangeDeliveryPriceMutation = { __typename?: 'Mutation', changeDeliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id: string, price: string }> };
 
 export type ChangeManyPricesMutationVariables = Exact<{
   oldPrice: Scalars['String'];
@@ -414,49 +414,49 @@ export type ChangeManyPricesMutationVariables = Exact<{
 }>;
 
 
-export type ChangeManyPricesMutation = { __typename?: 'Mutation', changeManyPrices?: Maybe<{ __typename?: 'Balloon', id?: Maybe<string>, price?: Maybe<string> }> };
+export type ChangeManyPricesMutation = { __typename?: 'Mutation', changeManyPrices?: Maybe<{ __typename?: 'Balloon', id: string, price: string }> };
 
 export type DeleteAssortmantMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteAssortmantMutation = { __typename?: 'Mutation', deleteAssortmant?: Maybe<{ __typename?: 'Assortment', id?: Maybe<string>, name?: Maybe<string>, price?: Maybe<string>, fixed?: Maybe<boolean> }> };
+export type DeleteAssortmantMutation = { __typename?: 'Mutation', deleteAssortmant?: Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }> };
 
 export type DeleteBouquetMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteBouquetMutation = { __typename?: 'Mutation', deleteBouquet?: Maybe<{ __typename?: 'Bouquet', id?: Maybe<string>, name?: Maybe<string>, subname?: Maybe<string>, price?: Maybe<string>, description?: Maybe<string>, code?: Maybe<number>, image?: Maybe<string>, personType?: Maybe<Person> }> };
+export type DeleteBouquetMutation = { __typename?: 'Mutation', deleteBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
 
 export type DeleteCategoryMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteCategoryMutation = { __typename?: 'Mutation', deleteCategory?: Maybe<{ __typename?: 'Category', id?: Maybe<string>, name?: Maybe<string> }> };
+export type DeleteCategoryMutation = { __typename?: 'Mutation', deleteCategory?: Maybe<{ __typename?: 'Category', id: string, name: string }> };
 
 export type DeleteColorMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteColorMutation = { __typename?: 'Mutation', deleteColor?: Maybe<{ __typename?: 'Color', id?: Maybe<string>, name?: Maybe<string>, cssName?: Maybe<string> }> };
+export type DeleteColorMutation = { __typename?: 'Mutation', deleteColor?: Maybe<{ __typename?: 'Color', id: string, name: string, cssName: string }> };
 
 export type DeletePhoneMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeletePhoneMutation = { __typename?: 'Mutation', deletePhone?: Maybe<{ __typename?: 'Phone', id?: Maybe<string>, number?: Maybe<string> }> };
+export type DeletePhoneMutation = { __typename?: 'Mutation', deletePhone?: Maybe<{ __typename?: 'Phone', id: string, number: string }> };
 
 export type DeleteSocialNetMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteSocialNetMutation = { __typename?: 'Mutation', deleteSocialNet?: Maybe<{ __typename?: 'SocialNet', id?: Maybe<string>, name?: Maybe<string>, link?: Maybe<string>, image?: Maybe<string> }> };
+export type DeleteSocialNetMutation = { __typename?: 'Mutation', deleteSocialNet?: Maybe<{ __typename?: 'SocialNet', id: string, name: string, link: string, image: string }> };
 
 export type SendOrderMutationVariables = Exact<{
   order: Scalars['JSON'];
@@ -478,14 +478,14 @@ export type AllBouquetsQuery = { __typename?: 'RootQueryType', allBouquets?: May
 export type AssortmentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AssortmentQuery = { __typename?: 'RootQueryType', assortment?: Maybe<Array<Maybe<{ __typename?: 'Assortment', id?: Maybe<string>, name?: Maybe<string>, price?: Maybe<string>, fixed?: Maybe<boolean> }>>> };
+export type AssortmentQuery = { __typename?: 'RootQueryType', assortment?: Maybe<Array<Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }>>> };
 
 export type BouquetQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type BouquetQuery = { __typename?: 'RootQueryType', bouquet?: Maybe<{ __typename?: 'Bouquet', id?: Maybe<string>, name?: Maybe<string>, subname?: Maybe<string>, price?: Maybe<string>, description?: Maybe<string>, code?: Maybe<number>, image?: Maybe<string>, personType?: Maybe<Person> }> };
+export type BouquetQuery = { __typename?: 'RootQueryType', bouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
 
 export type BouquetsQueryVariables = Exact<{
   skip: Scalars['Int'];
@@ -496,32 +496,32 @@ export type BouquetsQueryVariables = Exact<{
 }>;
 
 
-export type BouquetsQuery = { __typename?: 'RootQueryType', bouquets?: Maybe<Array<Maybe<{ __typename?: 'Bouquet', id?: Maybe<string>, name?: Maybe<string>, subname?: Maybe<string>, price?: Maybe<string>, description?: Maybe<string>, code?: Maybe<number>, image?: Maybe<string>, personType?: Maybe<Person> }>>> };
+export type BouquetsQuery = { __typename?: 'RootQueryType', bouquets?: Maybe<Array<Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }>>> };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CategoriesQuery = { __typename?: 'RootQueryType', categories?: Maybe<Array<Maybe<{ __typename?: 'Category', id?: Maybe<string>, name?: Maybe<string> }>>> };
+export type CategoriesQuery = { __typename?: 'RootQueryType', categories?: Maybe<Array<Maybe<{ __typename?: 'Category', id: string, name: string }>>> };
 
 export type ColorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ColorsQuery = { __typename?: 'RootQueryType', colors?: Maybe<Array<Maybe<{ __typename?: 'Color', id?: Maybe<string>, name?: Maybe<string>, cssName?: Maybe<string> }>>> };
+export type ColorsQuery = { __typename?: 'RootQueryType', colors?: Maybe<Array<Maybe<{ __typename?: 'Color', id: string, name: string, cssName: string }>>> };
 
 export type DeliveryPriceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DeliveryPriceQuery = { __typename?: 'RootQueryType', deliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id?: Maybe<string>, price?: Maybe<string> }> };
+export type DeliveryPriceQuery = { __typename?: 'RootQueryType', deliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id: string, price: string }> };
 
 export type PhonesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PhonesQuery = { __typename?: 'RootQueryType', phones?: Maybe<Array<Maybe<{ __typename?: 'Phone', id?: Maybe<string>, number?: Maybe<string> }>>> };
+export type PhonesQuery = { __typename?: 'RootQueryType', phones?: Maybe<Array<Maybe<{ __typename?: 'Phone', id: string, number: string }>>> };
 
 export type SocialNetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SocialNetsQuery = { __typename?: 'RootQueryType', socialNets?: Maybe<Array<Maybe<{ __typename?: 'SocialNet', id?: Maybe<string>, name?: Maybe<string>, link?: Maybe<string>, image?: Maybe<string> }>>> };
+export type SocialNetsQuery = { __typename?: 'RootQueryType', socialNets?: Maybe<Array<Maybe<{ __typename?: 'SocialNet', id: string, name: string, link: string, image: string }>>> };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -635,53 +635,53 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type AssortmentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Assortment'] = ResolversParentTypes['Assortment']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  price?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  fixed?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fixed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type BalloonResolvers<ContextType = any, ParentType extends ResolversParentTypes['Balloon'] = ResolversParentTypes['Balloon']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  subname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  price?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  code?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
   color?: Resolver<Maybe<ResolversTypes['Color']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type BouquetResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bouquet'] = ResolversParentTypes['Bouquet']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  subname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  price?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  code?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  personType?: Resolver<Maybe<ResolversTypes['Person']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  personType?: Resolver<ResolversTypes['Person'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   balloons?: Resolver<Maybe<Array<Maybe<ResolversTypes['Balloon']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ColorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Color'] = ResolversParentTypes['Color']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  cssName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  cssName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   balloons?: Resolver<Maybe<Array<Maybe<ResolversTypes['Balloon']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -691,8 +691,8 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type DeliveryPriceResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeliveryPrice'] = ResolversParentTypes['DeliveryPrice']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  price?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -725,8 +725,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type PhoneResolvers<ContextType = any, ParentType extends ResolversParentTypes['Phone'] = ResolversParentTypes['Phone']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  number?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  number?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -746,10 +746,10 @@ export type RootQueryTypeResolvers<ContextType = any, ParentType extends Resolve
 }>;
 
 export type SocialNetResolvers<ContextType = any, ParentType extends ResolversParentTypes['SocialNet'] = ResolversParentTypes['SocialNet']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  link?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

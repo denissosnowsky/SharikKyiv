@@ -9,12 +9,34 @@ import Badge from "react-bootstrap/Badge";
 import Head from "next/head";
 import PhoneBlock from "../../PhoneBlock/PhoneBlock";
 import SocialNetBlock from "../../SocialNetBlock/SocialNetBlock";
+import {
+  usePhonesQuery,
+  useSocialNetsQuery,
+} from "../../../store/generated/graphql";
 
 interface NavBarProps {
   title: string;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
+  const {
+    loading: loadingPhone,
+    error: errorPhone,
+    data: dataPhone,
+  } = usePhonesQuery();
+  const {
+    loading: loadingSocial,
+    error: errorSocial,
+    data: dataSocial,
+  } = useSocialNetsQuery();
+
+  if (loadingPhone || loadingSocial) return <h1>Loading...</h1>;
+  if (errorPhone || errorSocial) {
+    console.log(errorPhone);
+    console.log(errorSocial);
+    return;
+  }
+
   return (
     <>
       <Head>
@@ -28,23 +50,25 @@ const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
           xs={4}
           className="d-flex flex-column align-items-end justify-content-center"
         >
-          <div className='me-5'>
-            <PhoneBlock fontSize="20px" number="+380932209533" />
+          <div className="me-5">
+            {dataPhone?.phones?.map((item) => (
+              <PhoneBlock
+                fontSize="20px"
+                number={item!.number}
+                key={item?.id}
+              />
+            ))}
             <div className="d-flex justify-content-center">
-              <SocialNetBlock
-                size="35px"
-                margin="5px"
-                title="Telegram"
-                href="https://telegram.me/den_sosnowsky"
-                image="/telegram.png"
-              />
-              <SocialNetBlock
-                size="35px"
-                margin="5px"
-                title="Instagram"
-                href="https://www.instagram.com/sharikkyiv"
-                image="/instagram.png"
-              />
+              {dataSocial?.socialNets?.map((item) => (
+                <SocialNetBlock
+                  key={item?.id}
+                  size="35px"
+                  margin="5px"
+                  title={item!.name}
+                  href={item!.link}
+                  image={item!.image}
+                />
+              ))}
             </div>
           </div>
         </Col>
