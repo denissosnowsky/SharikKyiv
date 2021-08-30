@@ -7,13 +7,25 @@ import { Maybe } from "graphql/jsutils/Maybe";
 interface DropdownBtnWithColorProps {
   title: string;
   items: Maybe<{ id: string; name: string; cssName: string }>[];
+  externalClb?: (arg: string | undefined) => void;
 }
 
 const DropdownBtnWithColor: React.FC<DropdownBtnWithColorProps> = ({
   title,
   items,
+  externalClb
 }) => {
   const [chosen, setChosen] = useState<string>(title);
+
+  const handleAllBtn = () => {
+    setChosen("Все");
+    externalClb && externalClb(undefined);
+  };
+
+  const handleItemBtn = (id: string, name: string) => {
+    setChosen(name);
+    externalClb && externalClb(id);
+  };
 
   return (
     <DropdownButton
@@ -22,14 +34,14 @@ const DropdownBtnWithColor: React.FC<DropdownBtnWithColorProps> = ({
       variant="outline-primary"
       className={s.btn}
     >
-      <Dropdown.Item onClick={() => setChosen("Все")}>
+      <Dropdown.Item onClick={handleAllBtn}>
         <div className={s.color} style={{ display: "none" }}></div>
         {"Все"}
       </Dropdown.Item>
       {items &&
         items.length > 0 &&
         items.map((item) => (
-          <Dropdown.Item key={item?.id} onClick={() => setChosen(item!.name!)}>
+          <Dropdown.Item key={item?.id} onClick={()=>handleItemBtn(item?.id!, item?.name!)}>
             <div
               className={s.color}
               style={{ backgroundColor: item?.cssName }}

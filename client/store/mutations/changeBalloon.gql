@@ -2,7 +2,7 @@ mutation ChangeBalloon(
   $id: ID!
   $name: String
   $subname: String
-  $price: String
+  $price: Int
   $description: String
   $code: Int
   $image: Upload

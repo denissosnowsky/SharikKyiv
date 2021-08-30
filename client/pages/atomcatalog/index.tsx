@@ -6,7 +6,7 @@ import NavBar from "../../components/Layouts/Navbar/Navbar";
 import CardComponent from "../../components/Card/CardComponent";
 import DropdownBtn from "../../components/DropdownBtn/DropdownBtn";
 import DropdownBtnWithColor from "../../components/DropdownBtnWithColor/DropdownBtnWithColor";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import RangeInput from "../../components/RangeInput/RangeInput";
 import {
   useAllBalloonsQuery,
@@ -16,10 +16,30 @@ import {
 } from "../../store/generated/graphql";
 import { NetworkStatus } from "@apollo/client";
 import PaginationFC from "../../components/Pagination/Pagination";
+import { useRouter } from "next/router";
 
 const AtomCatalog: NextPage = () => {
-  const TAKE = 6;
-  const [page, setPage] = useState<number>(1);
+  const TAKE = 3;
+  const MAXPRICE = 2000;
+
+  const [page, setPage] = useState(1);
+  const [price, setPrice] = useState(MAXPRICE);
+  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [color, setColor] = useState<string | undefined>(undefined);
+  const [catName, setCatName] = useState<string>("");
+  const [colName, setColName] = useState<string>("");
+
+  useEffect(()=>{
+    const newState = category ? dataCategory?.categories?.find(o=>o?.id===category)?.name : 'Выбрать категорию | Все';
+    setCatName(newState!);
+  }, [category]);
+
+  useEffect(()=>{
+    const newState = color ? dataColor?.colors?.find(o=>o?.id===color)?.name : 'Выбрать цвет | Все';
+    setColName(newState!);
+  }, [color]);
+
+  const router = useRouter();
 
   const {
     loading: loadingBalloons,
@@ -31,6 +51,9 @@ const AtomCatalog: NextPage = () => {
     variables: {
       skip: (page - 1) * TAKE,
       take: TAKE,
+      price: price,
+      categoryId: category,
+      colorId: color,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -39,7 +62,16 @@ const AtomCatalog: NextPage = () => {
     loading: loadingCount,
     error: errorCount,
     data: dataCount,
-  } = useAllBalloonsQuery();
+    fetchMore: fetchMoreCount,
+    networkStatus: networkStatusCount,
+  } = useAllBalloonsQuery({
+    ssr: false,
+    variables: {
+      price: price,
+      categoryId: category,
+      colorId: color,
+    },
+  });
 
   const {
     loading: loadingCategory,
@@ -51,16 +83,38 @@ const AtomCatalog: NextPage = () => {
     loading: loadingColor,
     error: errorColor,
     data: dataColor,
-  } = useColorsQuery();
+  } = useColorsQuery({
+    ssr: false,
+  });
 
   useEffect(() => {
     fetchMore({
       variables: {
-        skip: page * TAKE,
+        skip: (page - 1) * TAKE,
         take: TAKE,
+        price: price,
+        categoryId: category,
+        colorId: color,
       },
     });
-  }, [page]);
+  }, [page, price, category, color]);
+
+  const handleFilter = useCallback(
+    (type: "RANGE" | "CATEGORY" | "COLOR") => (filter: number | string | undefined) => {
+      fetchMoreCount({
+        variables: {
+          price: type === "RANGE" ? filter : price,
+          categoryId: type === "CATEGORY" ? filter : category,
+          colorId: type === "COLOR" ? filter : color,
+        },
+      });
+      setPage(1);
+      type === "RANGE" && setPrice(filter as number);
+      type === "CATEGORY" && setCategory(filter as string);
+      type === "COLOR" && setColor(filter as string);
+    },
+    []
+  );
 
   if (networkStatus === NetworkStatus.refetch) return <h1>Refetching...</h1>;
   if (loadingBalloons || loadingCount || loadingCategory || loadingColor)
@@ -86,8 +140,9 @@ const AtomCatalog: NextPage = () => {
             xs={4}
           >
             <DropdownBtn
-              title="Выбрать категорию"
+              title={catName}
               items={dataCategory?.categories!}
+              externalClb={handleFilter("CATEGORY")}
             />
           </Col>
           <Col
@@ -97,9 +152,10 @@ const AtomCatalog: NextPage = () => {
             <RangeInput
               title="Макс. цена"
               min={0}
-              max={3000}
+              max={MAXPRICE}
               step={50}
-              start={3000}
+              start={price}
+              externalClb={handleFilter("RANGE")}
             />
           </Col>
           <Col
@@ -107,8 +163,9 @@ const AtomCatalog: NextPage = () => {
             xs={4}
           >
             <DropdownBtnWithColor
-              title="Выбрать цвет"
+              title={colName}
               items={dataColor?.colors!}
+              externalClb={handleFilter("COLOR")}
             />
           </Col>
         </Row>
@@ -125,6 +182,7 @@ const AtomCatalog: NextPage = () => {
                 id={item?.id!}
                 photo={item?.image!}
                 measure={"грн."}
+                link={router.pathname}
               />
             ))}
         </Row>

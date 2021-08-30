@@ -13,7 +13,7 @@ model Bouquet {
   updatedAt   DateTime   @updatedAt
   name        String
   subname     String
-  price       String
+  price       Int
   description String
   code        Int        @unique
   image       String
@@ -26,7 +26,7 @@ model Balloon {
   updatedAt   DateTime @updatedAt
   name        String
   subname     String
-  price       String
+  price       Int
   description String
   code        Int      @unique
   image       String

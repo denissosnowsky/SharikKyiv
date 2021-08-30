@@ -32,7 +32,7 @@ export const RootQuery = new GraphQLObjectType({
     bouquets: {
       type: new GraphQLList(BouquetType),
       args: {
-        price: { type: GraphQLString },
+        price: { type: GraphQLInt },
         skip: { type: new GraphQLNonNull(GraphQLInt) },
         take: { type: new GraphQLNonNull(GraphQLInt) },
         personType: { type: PersonType },
@@ -63,7 +63,7 @@ export const RootQuery = new GraphQLObjectType({
     balloons: {
       type: new GraphQLList(BalloonType),
       args: {
-        price: { type: GraphQLString },
+        price: { type: GraphQLInt },
         categoryId: { type: GraphQLID },
         colorId: { type: GraphQLID },
         skip: { type: new GraphQLNonNull(GraphQLInt) },
@@ -78,7 +78,12 @@ export const RootQuery = new GraphQLObjectType({
         return ctx.prisma.balloon.findMany({
           skip,
           take,
-          where: { price: { lte: price }, categoryId, colorId, code },
+          where: {
+            price: { lte: price },
+            categoryId: categoryId && +categoryId,
+            colorId: colorId && +colorId,
+            code,
+          },
           orderBy: {
             updatedAt: "desc",
           },
@@ -123,14 +128,42 @@ export const RootQuery = new GraphQLObjectType({
     },
     allBouquets: {
       type: GraphQLInt,
-      resolve(_parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.bouquet.count();
+      args: {
+        price: { type: GraphQLInt },
+        personType: { type: PersonType },
+        code: { type: GraphQLInt },
+      },
+      resolve(_parent, { price, personType, code }, ctx: ApolloServerContext) {
+        return ctx.prisma.bouquet.count({
+          where: {
+            price: { lte: price },
+            personType,
+            code,
+          },
+        });
       },
     },
     allBalloons: {
       type: GraphQLInt,
-      resolve(_parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.balloon.count();
+      args: {
+        price: { type: GraphQLInt },
+        categoryId: { type: GraphQLID },
+        colorId: { type: GraphQLID },
+        code: { type: GraphQLInt },
+      },
+      resolve(
+        _parent,
+        { price, code, categoryId, colorId },
+        ctx: ApolloServerContext
+      ) {
+        return ctx.prisma.balloon.count({
+          where: {
+            price: { lte: price },
+            code,
+            categoryId: categoryId && +categoryId,
+            colorId: colorId && +colorId,
+          },
+        });
       },
     },
   },

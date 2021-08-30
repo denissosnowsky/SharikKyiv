@@ -9,24 +9,31 @@ import {
   useAllBouquetsQuery,
   useBouquetsQuery,
 } from "../../store/generated/graphql";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { NetworkStatus } from "@apollo/client";
 import PaginationFC from "../../components/Pagination/Pagination";
+import { useRouter } from "next/router";
 
 const BouqCatalog: NextPage = () => {
-  const TAKE = 6;
-  const [page, setPage] = useState<number>(1);
+  const TAKE = 12;
+  const MAXPRICE = 2000;
+
+  const [page, setPage] = useState(1);
+  const [price, setPrice] = useState(MAXPRICE);
+
+  const router = useRouter();
 
   const {
     loading: loadingBouquets,
     error: errorBouquets,
     data: dataBouquets,
-    fetchMore,
-    networkStatus,
+    fetchMore: fetchMoreBouquets,
+    networkStatus: networkStatusBouquets,
   } = useBouquetsQuery({
     variables: {
       skip: (page - 1) * TAKE,
       take: TAKE,
+      price: price,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -35,22 +42,53 @@ const BouqCatalog: NextPage = () => {
     loading: loadingCount,
     error: errorCount,
     data: dataCount,
-  } = useAllBouquetsQuery();
+    fetchMore: fetchMoreCount,
+    networkStatus: networkStatusCount,
+  } = useAllBouquetsQuery({
+    ssr: false,
+    variables: {
+      price: price,
+    },
+  });
 
   useEffect(() => {
-    fetchMore({
+    fetchMoreBouquets({
       variables: {
-        skip: page * TAKE,
+        skip: (page-1) * TAKE,
         take: TAKE,
+        price: price,
       },
     });
-  }, [page]);
+  }, [page, price]);
 
-  if (networkStatus === NetworkStatus.refetch) return <h1>Refetching...</h1>;
+  const handlePrice = useCallback(
+    (price: number) => {
+      fetchMoreCount({
+        variables: {
+          price: price,
+        },
+      });
+      setPrice(price);
+      setPage(1);
+    },
+    [price]
+  );
+
+  if (
+    networkStatusBouquets === NetworkStatus.refetch ||
+    networkStatusCount === NetworkStatus.refetch
+  )
+    return <h1>Refetching...</h1>;
   if (loadingBouquets || loadingCount) return <h1>Loading...</h1>;
   if (errorBouquets || errorCount) {
     console.log(errorBouquets ? errorBouquets : errorCount);
   }
+
+  console.log(dataBouquets);
+  console.log(dataCount);
+  console.log(price);
+  console.log(page);
+
 
   return (
     <NavBar title="Готовые букеты">
@@ -67,9 +105,10 @@ const BouqCatalog: NextPage = () => {
             <RangeInput
               title="Макс. цена"
               min={0}
-              max={3000}
+              max={MAXPRICE}
               step={50}
-              start={3000}
+              start={price}
+              externalClb={handlePrice}
             />
           </Col>
           <Col
@@ -90,6 +129,7 @@ const BouqCatalog: NextPage = () => {
                 id={item?.id!}
                 photo={item?.image!}
                 measure={"грн."}
+                link={router.pathname}
               />
             ))}
         </Row>

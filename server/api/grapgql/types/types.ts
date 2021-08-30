@@ -20,7 +20,7 @@ export const BouquetType: GraphQLObjectType = new GraphQLObjectType({
     updatedAt: { type: new GraphQLNonNull (GraphQLDateTime) },
     name: { type: new GraphQLNonNull (GraphQLString) },
     subname: { type: new GraphQLNonNull (GraphQLString) },
-    price: { type: new GraphQLNonNull (GraphQLString) },
+    price: { type: new GraphQLNonNull (GraphQLInt) },
     description: { type: new GraphQLNonNull (GraphQLString) },
     code: { type: new GraphQLNonNull (GraphQLInt) },
     image: { type: new GraphQLNonNull (GraphQLString) },
@@ -45,20 +45,20 @@ export const BalloonType: GraphQLObjectType = new GraphQLObjectType({
     updatedAt: { type: new GraphQLNonNull (GraphQLDateTime) },
     name: { type: new GraphQLNonNull (GraphQLString) },
     subname: { type: new GraphQLNonNull (GraphQLString) },
-    price: { type: new GraphQLNonNull (GraphQLString) },
+    price: { type: new GraphQLNonNull (GraphQLInt) },
     description: { type: new GraphQLNonNull (GraphQLString) },
     code: { type: new GraphQLNonNull (GraphQLInt) },
     image: { type: new GraphQLNonNull (GraphQLString) },
     category: {
       type: CategoryType,
       resolve(parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.category.findUnique({where: {id: parent.categoryId}});
+        return ctx.prisma.category.findUnique({where: {id: +parent.categoryId}});
       },
     },
     color: {
       type: ColorType,
       resolve(parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.color.findUnique({where: {id: parent.colorId}});
+        return ctx.prisma.color.findUnique({where: {id: +parent.colorId}});
       },
     },
   }),
@@ -72,7 +72,7 @@ export const CategoryType: GraphQLObjectType = new GraphQLObjectType({
     balloons: {
       type: GraphQLList(BalloonType),
       resolve(parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.balloon.findMany({where: {categoryId: parent.id}});
+        return ctx.prisma.balloon.findMany({where: {categoryId: +parent.id}});
       },
     },
   }),
@@ -87,7 +87,7 @@ export const ColorType: GraphQLObjectType = new GraphQLObjectType({
     balloons: {
       type: GraphQLList(BalloonType),
       resolve(parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.balloon.findMany({where: {colorId: parent.id}});
+        return ctx.prisma.balloon.findMany({where: {colorId: +parent.id}});
       },
     },
   }),

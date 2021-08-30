@@ -1,4 +1,4 @@
-query Bouquets($skip: Int!, $take: Int!, $price: String, $personType: Person, $code: Int ) {
+query Bouquets($skip: Int!, $take: Int!, $price: Int, $personType: Person, $code: Int ) {
   bouquets(skip: $skip, take: $take, price: $price, personType: $personType, code: $code) {
     id
     name

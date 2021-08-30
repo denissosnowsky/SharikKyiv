@@ -37,7 +37,7 @@ export type Balloon = {
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
   subname: Scalars['String'];
-  price: Scalars['String'];
+  price: Scalars['Int'];
   description: Scalars['String'];
   code: Scalars['Int'];
   image: Scalars['String'];
@@ -52,7 +52,7 @@ export type Bouquet = {
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
   subname: Scalars['String'];
-  price: Scalars['String'];
+  price: Scalars['Int'];
   description: Scalars['String'];
   code: Scalars['Int'];
   image: Scalars['String'];
@@ -111,7 +111,7 @@ export type Mutation = {
 export type MutationAddBouquetArgs = {
   name: Scalars['String'];
   subname: Scalars['String'];
-  price: Scalars['String'];
+  price: Scalars['Int'];
   description: Scalars['String'];
   code: Scalars['Int'];
   image: Scalars['Upload'];
@@ -123,7 +123,7 @@ export type MutationChangeBouquetArgs = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   subname?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['Int']>;
   image?: Maybe<Scalars['Upload']>;
@@ -139,7 +139,7 @@ export type MutationDeleteBouquetArgs = {
 export type MutationAddBalloonArgs = {
   name: Scalars['String'];
   subname: Scalars['String'];
-  price: Scalars['String'];
+  price: Scalars['Int'];
   description: Scalars['String'];
   code: Scalars['Int'];
   image: Scalars['Upload'];
@@ -152,7 +152,7 @@ export type MutationChangeBalloonArgs = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   subname?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['Int']>;
   image?: Maybe<Scalars['Upload']>;
@@ -285,7 +285,7 @@ export type RootQueryTypeBouquetArgs = {
 
 
 export type RootQueryTypeBouquetsArgs = {
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
   personType?: Maybe<Person>;
@@ -299,11 +299,26 @@ export type RootQueryTypeBalloonArgs = {
 
 
 export type RootQueryTypeBalloonsArgs = {
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   categoryId?: Maybe<Scalars['ID']>;
   colorId?: Maybe<Scalars['ID']>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
+  code?: Maybe<Scalars['Int']>;
+};
+
+
+export type RootQueryTypeAllBouquetsArgs = {
+  price?: Maybe<Scalars['Int']>;
+  personType?: Maybe<Person>;
+  code?: Maybe<Scalars['Int']>;
+};
+
+
+export type RootQueryTypeAllBalloonsArgs = {
+  price?: Maybe<Scalars['Int']>;
+  categoryId?: Maybe<Scalars['ID']>;
+  colorId?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['Int']>;
 };
 
@@ -328,7 +343,7 @@ export type AddAssortmentMutation = { __typename?: 'Mutation', addAssortment?: M
 export type AddBouquetMutationVariables = Exact<{
   name: Scalars['String'];
   subname: Scalars['String'];
-  price: Scalars['String'];
+  price: Scalars['Int'];
   description: Scalars['String'];
   code: Scalars['Int'];
   image: Scalars['Upload'];
@@ -336,7 +351,7 @@ export type AddBouquetMutationVariables = Exact<{
 }>;
 
 
-export type AddBouquetMutation = { __typename?: 'Mutation', addBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
+export type AddBouquetMutation = { __typename?: 'Mutation', addBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }> };
 
 export type AddCategoryMutationVariables = Exact<{
   name: Scalars['String'];
@@ -390,7 +405,7 @@ export type ChangeBouquetMutationVariables = Exact<{
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   subname?: Maybe<Scalars['String']>;
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['Int']>;
   image?: Maybe<Scalars['Upload']>;
@@ -398,7 +413,7 @@ export type ChangeBouquetMutationVariables = Exact<{
 }>;
 
 
-export type ChangeBouquetMutation = { __typename?: 'Mutation', changeBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
+export type ChangeBouquetMutation = { __typename?: 'Mutation', changeBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }> };
 
 export type ChangeDeliveryPriceMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -414,7 +429,7 @@ export type ChangeManyPricesMutationVariables = Exact<{
 }>;
 
 
-export type ChangeManyPricesMutation = { __typename?: 'Mutation', changeManyPrices?: Maybe<{ __typename?: 'Balloon', id: string, price: string }> };
+export type ChangeManyPricesMutation = { __typename?: 'Mutation', changeManyPrices?: Maybe<{ __typename?: 'Balloon', id: string, price: number }> };
 
 export type DeleteAssortmantMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -428,7 +443,7 @@ export type DeleteBouquetMutationVariables = Exact<{
 }>;
 
 
-export type DeleteBouquetMutation = { __typename?: 'Mutation', deleteBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
+export type DeleteBouquetMutation = { __typename?: 'Mutation', deleteBouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }> };
 
 export type DeleteCategoryMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -465,12 +480,21 @@ export type SendOrderMutationVariables = Exact<{
 
 export type SendOrderMutation = { __typename?: 'Mutation', sendOrder?: Maybe<boolean> };
 
-export type AllBalloonsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllBalloonsQueryVariables = Exact<{
+  price?: Maybe<Scalars['Int']>;
+  categoryId?: Maybe<Scalars['ID']>;
+  colorId?: Maybe<Scalars['ID']>;
+  code?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type AllBalloonsQuery = { __typename?: 'RootQueryType', allBalloons?: Maybe<number> };
 
-export type AllBouquetsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllBouquetsQueryVariables = Exact<{
+  price?: Maybe<Scalars['Int']>;
+  personType?: Maybe<Person>;
+  code?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type AllBouquetsQuery = { __typename?: 'RootQueryType', allBouquets?: Maybe<number> };
@@ -485,37 +509,37 @@ export type BalloonQueryVariables = Exact<{
 }>;
 
 
-export type BalloonQuery = { __typename?: 'RootQueryType', balloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
+export type BalloonQuery = { __typename?: 'RootQueryType', balloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
 
 export type BalloonsQueryVariables = Exact<{
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   categoryId?: Maybe<Scalars['ID']>;
   colorId?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type BalloonsQuery = { __typename?: 'RootQueryType', balloons?: Maybe<Array<Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }>>> };
+export type BalloonsQuery = { __typename?: 'RootQueryType', balloons?: Maybe<Array<Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }>>> };
 
 export type BouquetQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type BouquetQuery = { __typename?: 'RootQueryType', bouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }> };
+export type BouquetQuery = { __typename?: 'RootQueryType', bouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }> };
 
 export type BouquetsQueryVariables = Exact<{
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  price?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
   personType?: Maybe<Person>;
   code?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type BouquetsQuery = { __typename?: 'RootQueryType', bouquets?: Maybe<Array<Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, personType: Person }>>> };
+export type BouquetsQuery = { __typename?: 'RootQueryType', bouquets?: Maybe<Array<Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }>>> };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -667,7 +691,7 @@ export type BalloonResolvers<ContextType = any, ParentType extends ResolversPare
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -682,7 +706,7 @@ export type BouquetResolvers<ContextType = any, ParentType extends ResolversPare
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -760,8 +784,8 @@ export type RootQueryTypeResolvers<ContextType = any, ParentType extends Resolve
   phones?: Resolver<Maybe<Array<Maybe<ResolversTypes['Phone']>>>, ParentType, ContextType>;
   socialNets?: Resolver<Maybe<Array<Maybe<ResolversTypes['SocialNet']>>>, ParentType, ContextType>;
   deliveryPrice?: Resolver<Maybe<ResolversTypes['DeliveryPrice']>, ParentType, ContextType>;
-  allBouquets?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  allBalloons?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  allBouquets?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<RootQueryTypeAllBouquetsArgs, never>>;
+  allBalloons?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<RootQueryTypeAllBalloonsArgs, never>>;
 }>;
 
 export type SocialNetResolvers<ContextType = any, ParentType extends ResolversParentTypes['SocialNet'] = ResolversParentTypes['SocialNet']> = ResolversObject<{
@@ -833,7 +857,7 @@ export type AddAssortmentMutationHookResult = ReturnType<typeof useAddAssortment
 export type AddAssortmentMutationResult = Apollo.MutationResult<AddAssortmentMutation>;
 export type AddAssortmentMutationOptions = Apollo.BaseMutationOptions<AddAssortmentMutation, AddAssortmentMutationVariables>;
 export const AddBouquetDocument = gql`
-    mutation AddBouquet($name: String!, $subname: String!, $price: String!, $description: String!, $code: Int!, $image: Upload!, $personType: Person!) {
+    mutation AddBouquet($name: String!, $subname: String!, $price: Int!, $description: String!, $code: Int!, $image: Upload!, $personType: Person!) {
   addBouquet(
     name: $name
     subname: $subname
@@ -1102,7 +1126,7 @@ export type ChangeAssortmantMutationHookResult = ReturnType<typeof useChangeAsso
 export type ChangeAssortmantMutationResult = Apollo.MutationResult<ChangeAssortmantMutation>;
 export type ChangeAssortmantMutationOptions = Apollo.BaseMutationOptions<ChangeAssortmantMutation, ChangeAssortmantMutationVariables>;
 export const ChangeBouquetDocument = gql`
-    mutation ChangeBouquet($id: ID!, $name: String, $subname: String, $price: String, $description: String, $code: Int, $image: Upload, $personType: Person) {
+    mutation ChangeBouquet($id: ID!, $name: String, $subname: String, $price: Int, $description: String, $code: Int, $image: Upload, $personType: Person) {
   changeBouquet(
     id: $id
     name: $name
@@ -1474,8 +1498,13 @@ export type SendOrderMutationHookResult = ReturnType<typeof useSendOrderMutation
 export type SendOrderMutationResult = Apollo.MutationResult<SendOrderMutation>;
 export type SendOrderMutationOptions = Apollo.BaseMutationOptions<SendOrderMutation, SendOrderMutationVariables>;
 export const AllBalloonsDocument = gql`
-    query AllBalloons {
-  allBalloons
+    query AllBalloons($price: Int, $categoryId: ID, $colorId: ID, $code: Int) {
+  allBalloons(
+    price: $price
+    categoryId: $categoryId
+    colorId: $colorId
+    code: $code
+  )
 }
     `;
 
@@ -1491,6 +1520,10 @@ export const AllBalloonsDocument = gql`
  * @example
  * const { data, loading, error } = useAllBalloonsQuery({
  *   variables: {
+ *      price: // value for 'price'
+ *      categoryId: // value for 'categoryId'
+ *      colorId: // value for 'colorId'
+ *      code: // value for 'code'
  *   },
  * });
  */
@@ -1506,8 +1539,8 @@ export type AllBalloonsQueryHookResult = ReturnType<typeof useAllBalloonsQuery>;
 export type AllBalloonsLazyQueryHookResult = ReturnType<typeof useAllBalloonsLazyQuery>;
 export type AllBalloonsQueryResult = Apollo.QueryResult<AllBalloonsQuery, AllBalloonsQueryVariables>;
 export const AllBouquetsDocument = gql`
-    query AllBouquets {
-  allBouquets
+    query AllBouquets($price: Int, $personType: Person, $code: Int) {
+  allBouquets(price: $price, personType: $personType, code: $code)
 }
     `;
 
@@ -1523,6 +1556,9 @@ export const AllBouquetsDocument = gql`
  * @example
  * const { data, loading, error } = useAllBouquetsQuery({
  *   variables: {
+ *      price: // value for 'price'
+ *      personType: // value for 'personType'
+ *      code: // value for 'code'
  *   },
  * });
  */
@@ -1624,7 +1660,7 @@ export type BalloonQueryHookResult = ReturnType<typeof useBalloonQuery>;
 export type BalloonLazyQueryHookResult = ReturnType<typeof useBalloonLazyQuery>;
 export type BalloonQueryResult = Apollo.QueryResult<BalloonQuery, BalloonQueryVariables>;
 export const BalloonsDocument = gql`
-    query Balloons($skip: Int!, $take: Int!, $price: String, $categoryId: ID, $colorId: ID, $code: Int) {
+    query Balloons($skip: Int!, $take: Int!, $price: Int, $categoryId: ID, $colorId: ID, $code: Int) {
   balloons(
     skip: $skip
     take: $take
@@ -1727,7 +1763,7 @@ export type BouquetQueryHookResult = ReturnType<typeof useBouquetQuery>;
 export type BouquetLazyQueryHookResult = ReturnType<typeof useBouquetLazyQuery>;
 export type BouquetQueryResult = Apollo.QueryResult<BouquetQuery, BouquetQueryVariables>;
 export const BouquetsDocument = gql`
-    query Bouquets($skip: Int!, $take: Int!, $price: String, $personType: Person, $code: Int) {
+    query Bouquets($skip: Int!, $take: Int!, $price: Int, $personType: Person, $code: Int) {
   bouquets(
     skip: $skip
     take: $take

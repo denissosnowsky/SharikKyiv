@@ -1,7 +1,7 @@
 query Balloons(
   $skip: Int!
   $take: Int!
-  $price: String
+  $price: Int
   $categoryId: ID
   $colorId: ID
   $code: Int

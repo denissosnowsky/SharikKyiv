@@ -2,19 +2,20 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import s from "./CardComponent.module.css";
-import Router from "next/router";
 import cs from "classnames";
 import Counter from "../Counter/Counter";
 import Link from "next/link";
+import { googleUrl } from "../../config";
 
 interface CardComponentProps {
   photo: string;
   name: string;
   subName: string;
-  price: string;
+  price: number;
   code: number;
   id: string;
   measure: string;
+  link: string;
 }
 
 const CardComponent: React.FC<CardComponentProps> = ({
@@ -25,6 +26,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
   code,
   id,
   measure,
+  link
 }) => {
   return (
     <Col className={s.card} xs={4}>
@@ -32,7 +34,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
         style={{ width: "18rem", borderRadius: "15px" }}
         className="border border-1"
       >
-        <Card.Img variant="top" src={photo} className={s.img} />
+        <Card.Img variant="top" src={`${googleUrl}${photo}`} className={s.img} />
         <Card.Body className="d-flex flex-column align-items-center pb-2">
           <Card.Title className={s.title}>{name}</Card.Title>
           <Card.Title className={s.subTitle}>{subName}</Card.Title>
@@ -50,7 +52,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
               </Button>
             </a>
           </Link>
-          <Link href={`/bouqcatalog/${id}`}>
+          <Link href={`${link}/${id}`}>
             <a className={s.link}>
               <Button
                 variant="outline-primary"

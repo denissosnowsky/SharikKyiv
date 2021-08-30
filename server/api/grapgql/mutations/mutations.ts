@@ -31,7 +31,7 @@ export const Mutation = new GraphQLObjectType({
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) },
         subname: { type: new GraphQLNonNull(GraphQLString) },
-        price: { type: new GraphQLNonNull(GraphQLString) },
+        price: { type: new GraphQLNonNull(GraphQLInt) },
         description: { type: new GraphQLNonNull(GraphQLString) },
         code: { type: new GraphQLNonNull(GraphQLInt) },
         image: { type: new GraphQLNonNull(GraphQLUpload) },
@@ -72,7 +72,7 @@ export const Mutation = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
         subname: { type: GraphQLString },
-        price: { type: GraphQLString },
+        price: { type: GraphQLInt },
         description: { type: GraphQLString },
         code: { type: GraphQLInt },
         image: { type: GraphQLUpload },
@@ -153,7 +153,7 @@ export const Mutation = new GraphQLObjectType({
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) },
         subname: { type: new GraphQLNonNull(GraphQLString) },
-        price: { type: new GraphQLNonNull(GraphQLString) },
+        price: { type: new GraphQLNonNull(GraphQLInt) },
         description: { type: new GraphQLNonNull(GraphQLString) },
         code: { type: new GraphQLNonNull(GraphQLInt) },
         image: { type: new GraphQLNonNull(GraphQLUpload) }, //add file photo
@@ -196,7 +196,7 @@ export const Mutation = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
         subname: { type: GraphQLString },
-        price: { type: GraphQLString },
+        price: { type: GraphQLInt },
         description: { type: GraphQLString },
         code: { type: GraphQLInt },
         image: { type: GraphQLUpload },
