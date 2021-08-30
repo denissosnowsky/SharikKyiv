@@ -33,10 +33,20 @@
 .img {
   height: 300px;
   border-radius: 15px 15px 0px 0px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .button {
   font-weight: 500;
   font-size: 17px;
+}
+
+.link{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.link:hover{
+  transform: scale(1.00) !important;
 }

@@ -19,7 +19,40 @@ export function getApolloClient(forceNew?: boolean) {
     CLIENT = new ApolloClient({
       ssrMode: isServer,
       link,
-      cache: new InMemoryCache().restore(windowApolloState || {}),
+      cache: new InMemoryCache({
+        typePolicies: {
+          Query: {
+            fields: {
+              bouquets: {
+                keyArgs: ["price", "personType", "code"],
+                merge(existing: any[], incoming: any[], { args: { skip } }: Record<string, any>) {
+                  const merged = existing ? existing.slice(0) : [];
+                  for (let i = 0; i < incoming.length; ++i) {
+                    merged[skip + i] = incoming[i];
+                  }
+                  return merged;
+                },
+                read(existing, { args: { skip, take } }: Record<string, any>) {
+                  return existing && existing.slice(skip, skip + take);
+                },
+              },
+              balloons: {
+                keyArgs: ["price", "categoryId", "colorId", "code"],
+                merge(existing: any[], incoming: any[], { args: { skip } }: Record<string, any>) {
+                  const merged = existing ? existing.slice(0) : [];
+                  for (let i = 0; i < incoming.length; ++i) {
+                    merged[skip + i] = incoming[i];
+                  }
+                  return merged;
+                },
+                read(existing, { args: { skip, take } }: Record<string, any>) {
+                  return existing && existing.slice(skip, skip + take);
+                },
+              },
+            },
+          },
+        },
+      }).restore(windowApolloState || {}),
     });
   }
 

@@ -1,86 +1,29 @@
 import type { NextPage } from "next";
+import { useMemo } from "react";
 import ContentLayout from "../components/Layouts/ContentLayout/ContentLayout";
 import NavBar from "../components/Layouts/Navbar/Navbar";
-import ListGroup from "react-bootstrap/ListGroup";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Counter from "../components/Counter/Counter";
-import s from "../styles/Calculator.module.css";
 import ListWithCounter from "../components/ListWithCounter/ListWithCounter";
+import { useAssortmentQuery } from "../store/generated/graphql";
+import { arrayConvertor } from "../utils/arrayConvertor";
 
-const db = [
-  {
-    name: "Латексный шар 30см.",
-    price: "35",
-    id: '1',
-    fixed: true
-  },
-  {
-    name: "Хромовый шар 30см.",
-    price: "40",
-    id: '2',
-    fixed: true
-  },
-  {
-    name: "Шар с конфетти 30см.",
-    price: "40",
-    id: '3',
-    fixed: true
-  },
-  {
-    name: "Фольгированные сердце, звезда, круг 45см.",
-    price: "85",
-    id: '4',
-    fixed: true
-  },
-  {
-    name: "Цифра 66см.",
-    price: "200",
-    id: '5',
-    fixed: true
-  },
-  {
-    name: "Цифра 100см.",
-    price: "250",
-    id: '6',
-    fixed: true
-  },
-  {
-    name: "Фольгированные фигуры 45см+.",
-    price: "200+",
-    id: '7',
-    fixed: false
-  },
-  {
-    name: "Коробка без надписи и банта",
-    price: "400",
-    id: '8',
-    fixed: true
-  },
-  {
-    name: "Коробка с надписью и бантом",
-    price: "500",
-    id: '9',
-    fixed: true
-  },
-];
+const Calculator: () => JSX.Element | undefined = () => {
+  const { loading, error, data } = useAssortmentQuery();
 
-let arr = new Array(db.length);
+  const convertedArr = useMemo(
+    () => arrayConvertor(data && data.assortment),
+    [data]
+  );
 
-for (let i = 0; i < db.length; i++) {
-  arr[i] = {
-    leftText: db[i].name,
-    rightText: db[i].price,
-    id: db[i].id,
-    fixed: db[i].fixed
-  };
-}
+  if (loading) return <h1>Loading...</h1>;
+  if (error) {
+    console.log(error);
+    return;
+  }
 
-const Calculator: NextPage = () => {
   return (
-    <NavBar title='Калькулятор'>
+    <NavBar title="Калькулятор">
       <ContentLayout>
-        <ListWithCounter measure={"грн."} data={arr} />
+        <ListWithCounter measure={"грн."} data={convertedArr} />
       </ContentLayout>
     </NavBar>
   );

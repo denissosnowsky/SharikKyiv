@@ -1,23 +1,24 @@
 import ListGroup from "react-bootstrap/ListGroup";
+import { ArrayConvertorResultType } from "../../types/arrayConvertorTypes";
 import s from "./List.module.css";
 
 interface ListProps {
-  data: Array<{
-    leftText: string;
-    rightText: string;
-    id: number;
-  }>;
+  data: ArrayConvertorResultType;
+  measure: string;
 }
 
-const List: React.FC<ListProps> = ({ data }) => {
+const List: React.FC<ListProps> = ({ data, measure }) => {
   return (
     <ListGroup variant="flush" className={s.ul}>
-      {data.map((i) => (
-        <ListGroup.Item className={s.li} key={i.id}>
-          <span>{i.leftText}</span>
-          <span>{i.rightText}</span>
-        </ListGroup.Item>
-      ))}
+      {data.length > 0 &&
+        data.map((i) => (
+          <ListGroup.Item className={s.li} key={i.id}>
+            <span>{i.leftText}</span>
+            <span>
+              {i.rightText} {measure}
+            </span>
+          </ListGroup.Item>
+        ))}
     </ListGroup>
   );
 };

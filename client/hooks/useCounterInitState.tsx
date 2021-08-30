@@ -4,7 +4,7 @@ type Id = {
   id: string;
 };
 
-export function useCounterInitState<T>(data: Array<T & Id>) {
+export function useCounterInitState(data: any & Id) {
   return useMemo(() => {
     const obj: Record<string, number> = {};
     for (let i = 0; i < data.length; i++) {

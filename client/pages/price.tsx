@@ -1,71 +1,29 @@
 import type { NextPage } from "next";
+import { useMemo } from "react";
 import ContentLayout from "../components/Layouts/ContentLayout/ContentLayout";
 import NavBar from "../components/Layouts/Navbar/Navbar";
 import List from "../components/List/List";
+import { useAssortmentQuery } from "../store/generated/graphql";
+import { arrayConvertor } from "../utils/arrayConvertor";
 
-const Price: NextPage = () => {
-  const db = [
-    {
-      name: "Латексный шар 30см.",
-      price: "35",
-      id: 1,
-    },
-    {
-      name: "Хромовый шар 30см.",
-      price: "40",
-      id: 2,
-    },
-    {
-      name: "Шар с конфетти 30см.",
-      price: "40",
-      id: 3,
-    },
-    {
-      name: "Фольгированные сердце, звезда, круг 45см.",
-      price: "85",
-      id: 4,
-    },
-    {
-      name: "Цифра 66см.",
-      price: "200",
-      id: 5,
-    },
-    {
-      name: "Цифра 100см.",
-      price: "250",
-      id: 6,
-    },
-    {
-      name: "Фольгированные фигуры 45см+.",
-      price: "200+",
-      id: 7,
-    },
-    {
-      name: "Коробка без надписи и банта",
-      price: "400",
-      id: 8,
-    },
-    {
-      name: "Коробка с надписью и бантом",
-      price: "500",
-      id: 9,
-    },
-  ];
+const Price: () => JSX.Element | undefined = () => {
+  const { loading, error, data } = useAssortmentQuery();
 
-  let arr = new Array(db.length);
+  const convertedArr = useMemo(
+    () => arrayConvertor(data && data.assortment),
+    [data]
+  );
 
-  for (let i = 0; i < db.length; i++) {
-    arr[i] = {
-      leftText: db[i].name,
-      rightText: `${db[i].price} грн.`,
-      id: db[i].id,
-    };
+  if (loading) return <h1>Loading...</h1>;
+  if (error) {
+    console.log(error);
+    return;
   }
 
   return (
-    <NavBar title='Цены'>
+    <NavBar title="Цены">
       <ContentLayout>
-        <List data={arr} />
+        <List data={convertedArr} measure={"грн."} />
       </ContentLayout>
     </NavBar>
   );

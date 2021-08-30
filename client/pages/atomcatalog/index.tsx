@@ -6,43 +6,94 @@ import NavBar from "../../components/Layouts/Navbar/Navbar";
 import CardComponent from "../../components/Card/CardComponent";
 import DropdownBtn from "../../components/DropdownBtn/DropdownBtn";
 import DropdownBtnWithColor from "../../components/DropdownBtnWithColor/DropdownBtnWithColor";
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import RangeInput from "../../components/RangeInput/RangeInput";
-
-const categotyArray = [
-  "Все",
-  "Пастель, металик шары",
-  "Хром шары",
-  "Конфетти шары",
-  "Фольгированные шары 45см.",
-  "Фольгированные шары 45см+.",
-  "Цифры 100см.",
-  "Цифры 66см.",
-  "Коробки",
-];
-const colorArray = [
-  { text: "Золотой", color: "goldenrod" },
-  { text: "Серебряный", color: "silver" },
-  { text: "Красный", color: "red" },
-  { text: "Синий", color: "blue" },
-  { text: "Желтый", color: "yellow" },
-  { text: "Белый", color: "white" },
-  { text: "Черный", color: "black" },
-  { text: "Серый", color: "gray" },
-  { text: "Фиолетовый", color: "purple" },
-  { text: "Голубой", color: "skyblue" },
-  { text: "Зеленый", color: "green" },
-];
+import {
+  useAllBalloonsQuery,
+  useBalloonsQuery,
+  useCategoriesQuery,
+  useColorsQuery,
+} from "../../store/generated/graphql";
+import { NetworkStatus } from "@apollo/client";
+import PaginationFC from "../../components/Pagination/Pagination";
 
 const AtomCatalog: NextPage = () => {
+  const TAKE = 6;
+  const [page, setPage] = useState<number>(1);
+
+  const {
+    loading: loadingBalloons,
+    error: errorBalloons,
+    data: dataBalloons,
+    fetchMore,
+    networkStatus,
+  } = useBalloonsQuery({
+    variables: {
+      skip: (page - 1) * TAKE,
+      take: TAKE,
+    },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const {
+    loading: loadingCount,
+    error: errorCount,
+    data: dataCount,
+  } = useAllBalloonsQuery();
+
+  const {
+    loading: loadingCategory,
+    error: errorCategory,
+    data: dataCategory,
+  } = useCategoriesQuery();
+
+  const {
+    loading: loadingColor,
+    error: errorColor,
+    data: dataColor,
+  } = useColorsQuery();
+
+  useEffect(() => {
+    fetchMore({
+      variables: {
+        skip: page * TAKE,
+        take: TAKE,
+      },
+    });
+  }, [page]);
+
+  if (networkStatus === NetworkStatus.refetch) return <h1>Refetching...</h1>;
+  if (loadingBalloons || loadingCount || loadingCategory || loadingColor)
+    return <h1>Loading...</h1>;
+  if (errorBalloons || errorCount || errorCategory || errorColor) {
+    console.log(
+      errorBalloons
+        ? errorBalloons
+        : errorCount
+        ? errorCount
+        : errorCategory
+        ? errorCategory
+        : errorColor
+    );
+  }
+
   return (
     <NavBar title="Отдельные шары">
       <ContentLayout>
         <Row style={{ height: "60px" }}>
-          <Col className="d-flex justify-content-center align-items-center" xs={4}>
-            <DropdownBtn title="Выбрать категорию" items={categotyArray} />
+          <Col
+            className="d-flex justify-content-center align-items-center"
+            xs={4}
+          >
+            <DropdownBtn
+              title="Выбрать категорию"
+              items={dataCategory?.categories!}
+            />
           </Col>
-          <Col className="d-flex justify-content-center align-items-center" xs={4}>
+          <Col
+            className="d-flex justify-content-center align-items-center"
+            xs={4}
+          >
             <RangeInput
               title="Макс. цена"
               min={0}
@@ -51,19 +102,38 @@ const AtomCatalog: NextPage = () => {
               start={3000}
             />
           </Col>
-          <Col className="d-flex justify-content-center align-items-center" xs={4}>
-            <DropdownBtnWithColor title="Выбрать цвет" items={colorArray} />
+          <Col
+            className="d-flex justify-content-center align-items-center"
+            xs={4}
+          >
+            <DropdownBtnWithColor
+              title="Выбрать цвет"
+              items={dataColor?.colors!}
+            />
           </Col>
         </Row>
         <Row>
-          <CardComponent photo="/photo2.jpg" />
-          <CardComponent photo="/photo2.jpg" />
-          <CardComponent photo="/photo2.jpg" />
-          <CardComponent photo="/photo2.jpg" />
-          <CardComponent photo="/photo2.jpg" />
-          <CardComponent photo="/photo2.jpg" />
-          <CardComponent photo="/photo2.jpg" />
+          {dataBalloons?.balloons &&
+            dataBalloons?.balloons?.length > 0 &&
+            dataBalloons?.balloons?.map((item) => (
+              <CardComponent
+                key={item?.id}
+                name={item?.name!}
+                subName={item?.subname!}
+                price={item?.price!}
+                code={item?.code!}
+                id={item?.id!}
+                photo={item?.image!}
+                measure={"грн."}
+              />
+            ))}
         </Row>
+        <PaginationFC
+          page={page}
+          setPage={setPage}
+          pageSize={TAKE}
+          allCount={dataCount?.allBalloons!}
+        />
       </ContentLayout>
     </NavBar>
   );

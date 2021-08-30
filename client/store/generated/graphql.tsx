@@ -480,6 +480,25 @@ export type AssortmentQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AssortmentQuery = { __typename?: 'RootQueryType', assortment?: Maybe<Array<Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }>>> };
 
+export type BalloonQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type BalloonQuery = { __typename?: 'RootQueryType', balloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
+
+export type BalloonsQueryVariables = Exact<{
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+  price?: Maybe<Scalars['String']>;
+  categoryId?: Maybe<Scalars['ID']>;
+  colorId?: Maybe<Scalars['ID']>;
+  code?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type BalloonsQuery = { __typename?: 'RootQueryType', balloons?: Maybe<Array<Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: string, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }>>> };
+
 export type BouquetQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -1555,6 +1574,116 @@ export function useAssortmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type AssortmentQueryHookResult = ReturnType<typeof useAssortmentQuery>;
 export type AssortmentLazyQueryHookResult = ReturnType<typeof useAssortmentLazyQuery>;
 export type AssortmentQueryResult = Apollo.QueryResult<AssortmentQuery, AssortmentQueryVariables>;
+export const BalloonDocument = gql`
+    query Balloon($id: ID!) {
+  balloon(id: $id) {
+    id
+    name
+    subname
+    price
+    description
+    code
+    image
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useBalloonQuery__
+ *
+ * To run a query within a React component, call `useBalloonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBalloonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBalloonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBalloonQuery(baseOptions: Apollo.QueryHookOptions<BalloonQuery, BalloonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BalloonQuery, BalloonQueryVariables>(BalloonDocument, options);
+      }
+export function useBalloonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BalloonQuery, BalloonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BalloonQuery, BalloonQueryVariables>(BalloonDocument, options);
+        }
+export type BalloonQueryHookResult = ReturnType<typeof useBalloonQuery>;
+export type BalloonLazyQueryHookResult = ReturnType<typeof useBalloonLazyQuery>;
+export type BalloonQueryResult = Apollo.QueryResult<BalloonQuery, BalloonQueryVariables>;
+export const BalloonsDocument = gql`
+    query Balloons($skip: Int!, $take: Int!, $price: String, $categoryId: ID, $colorId: ID, $code: Int) {
+  balloons(
+    skip: $skip
+    take: $take
+    price: $price
+    categoryId: $categoryId
+    colorId: $colorId
+    code: $code
+  ) {
+    id
+    name
+    subname
+    price
+    description
+    code
+    image
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useBalloonsQuery__
+ *
+ * To run a query within a React component, call `useBalloonsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBalloonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBalloonsQuery({
+ *   variables: {
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      price: // value for 'price'
+ *      categoryId: // value for 'categoryId'
+ *      colorId: // value for 'colorId'
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useBalloonsQuery(baseOptions: Apollo.QueryHookOptions<BalloonsQuery, BalloonsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BalloonsQuery, BalloonsQueryVariables>(BalloonsDocument, options);
+      }
+export function useBalloonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BalloonsQuery, BalloonsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BalloonsQuery, BalloonsQueryVariables>(BalloonsDocument, options);
+        }
+export type BalloonsQueryHookResult = ReturnType<typeof useBalloonsQuery>;
+export type BalloonsLazyQueryHookResult = ReturnType<typeof useBalloonsLazyQuery>;
+export type BalloonsQueryResult = Apollo.QueryResult<BalloonsQuery, BalloonsQueryVariables>;
 export const BouquetDocument = gql`
     query Bouquet($id: ID!) {
   bouquet(id: $id) {
