@@ -1,8 +1,8 @@
-import type { NextPage } from "next";
 import { useMemo } from "react";
 import ContentLayout from "../components/Layouts/ContentLayout/ContentLayout";
 import NavBar from "../components/Layouts/Navbar/Navbar";
 import ListWithCounter from "../components/ListWithCounter/ListWithCounter";
+import Loading from "../components/Loading/Loading";
 import { useAssortmentQuery } from "../store/generated/graphql";
 import { arrayConvertor } from "../utils/arrayConvertor";
 
@@ -14,7 +14,6 @@ const Calculator: () => JSX.Element | undefined = () => {
     [data]
   );
 
-  if (loading) return <h1>Loading...</h1>;
   if (error) {
     console.log(error);
     return;
@@ -23,7 +22,11 @@ const Calculator: () => JSX.Element | undefined = () => {
   return (
     <NavBar title="Калькулятор">
       <ContentLayout>
-        <ListWithCounter measure={"грн."} data={convertedArr} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <ListWithCounter measure={"грн."} data={convertedArr} />
+        )}
       </ContentLayout>
     </NavBar>
   );

@@ -13,29 +13,35 @@ import {
   useBalloonsQuery,
   useCategoriesQuery,
   useColorsQuery,
+  useMaxBalloonPriceQuery,
 } from "../../store/generated/graphql";
 import { NetworkStatus } from "@apollo/client";
 import PaginationFC from "../../components/Pagination/Pagination";
 import { useRouter } from "next/router";
+import Loading from "../../components/Loading/Loading";
 
 const AtomCatalog: NextPage = () => {
   const TAKE = 3;
-  const MAXPRICE = 2000;
+  const PRICE_STEP = 50;
 
   const [page, setPage] = useState(1);
-  const [price, setPrice] = useState(MAXPRICE);
+  const [price, setPrice] = useState<number | undefined>(undefined);
   const [category, setCategory] = useState<string | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
   const [catName, setCatName] = useState<string>("");
   const [colName, setColName] = useState<string>("");
 
-  useEffect(()=>{
-    const newState = category ? dataCategory?.categories?.find(o=>o?.id===category)?.name : 'Выбрать категорию | Все';
+  useEffect(() => {
+    const newState = category
+      ? dataCategory?.categories?.find((o) => o?.id === category)?.name
+      : "Выбрать категорию | Все";
     setCatName(newState!);
   }, [category]);
 
-  useEffect(()=>{
-    const newState = color ? dataColor?.colors?.find(o=>o?.id===color)?.name : 'Выбрать цвет | Все';
+  useEffect(() => {
+    const newState = color
+      ? dataColor?.colors?.find((o) => o?.id === color)?.name
+      : "Выбрать цвет | Все";
     setColName(newState!);
   }, [color]);
 
@@ -87,6 +93,14 @@ const AtomCatalog: NextPage = () => {
     ssr: false,
   });
 
+  const {
+    loading: loadingMaxPrice,
+    error: errorMaxPrice,
+    data: dataMaxPrice,
+  } = useMaxBalloonPriceQuery({
+    ssr: false,
+  });
+
   useEffect(() => {
     fetchMore({
       variables: {
@@ -100,25 +114,23 @@ const AtomCatalog: NextPage = () => {
   }, [page, price, category, color]);
 
   const handleFilter = useCallback(
-    (type: "RANGE" | "CATEGORY" | "COLOR") => (filter: number | string | undefined) => {
-      fetchMoreCount({
-        variables: {
-          price: type === "RANGE" ? filter : price,
-          categoryId: type === "CATEGORY" ? filter : category,
-          colorId: type === "COLOR" ? filter : color,
-        },
-      });
-      setPage(1);
-      type === "RANGE" && setPrice(filter as number);
-      type === "CATEGORY" && setCategory(filter as string);
-      type === "COLOR" && setColor(filter as string);
-    },
+    (type: "RANGE" | "CATEGORY" | "COLOR") =>
+      (filter: number | string | undefined) => {
+        fetchMoreCount({
+          variables: {
+            price: type === "RANGE" ? filter : price,
+            categoryId: type === "CATEGORY" ? filter : category,
+            colorId: type === "COLOR" ? filter : color,
+          },
+        });
+        setPage(1);
+        type === "RANGE" && setPrice(filter as number);
+        type === "CATEGORY" && setCategory(filter as string);
+        type === "COLOR" && setColor(filter as string);
+      },
     []
   );
 
-  if (networkStatus === NetworkStatus.refetch) return <h1>Refetching...</h1>;
-  if (loadingBalloons || loadingCount || loadingCategory || loadingColor)
-    return <h1>Loading...</h1>;
   if (errorBalloons || errorCount || errorCategory || errorColor) {
     console.log(
       errorBalloons
@@ -128,70 +140,90 @@ const AtomCatalog: NextPage = () => {
         : errorCategory
         ? errorCategory
         : errorColor
+        ? errorColor
+        : errorMaxPrice
     );
   }
+
+  const maxPrice =
+    dataMaxPrice &&
+    (dataMaxPrice?.maxBalloonPrice! % PRICE_STEP === 0
+      ? dataMaxPrice.maxBalloonPrice
+      : dataMaxPrice?.maxBalloonPrice! +
+        (PRICE_STEP - (dataMaxPrice?.maxBalloonPrice! % PRICE_STEP)));
 
   return (
     <NavBar title="Отдельные шары">
       <ContentLayout>
-        <Row style={{ height: "60px" }}>
-          <Col
-            className="d-flex justify-content-center align-items-center"
-            xs={4}
-          >
-            <DropdownBtn
-              title={catName}
-              items={dataCategory?.categories!}
-              externalClb={handleFilter("CATEGORY")}
+        {loadingBalloons ||
+        loadingCount ||
+        loadingCategory ||
+        loadingColor ||
+        loadingMaxPrice ||
+        networkStatus === NetworkStatus.refetch ? (
+          <Loading />
+        ) : (
+          <>
+            <Row style={{ height: "60px" }}>
+              <Col
+                className="d-flex justify-content-center align-items-center"
+                xs={4}
+              >
+                <DropdownBtn
+                  title={catName}
+                  items={dataCategory?.categories!}
+                  externalClb={handleFilter("CATEGORY")}
+                />
+              </Col>
+              <Col
+                className="d-flex justify-content-center align-items-center"
+                xs={4}
+              >
+                <RangeInput
+                  title="Макс. цена"
+                  min={PRICE_STEP}
+                  max={maxPrice!}
+                  step={PRICE_STEP}
+                  start={price ? price : maxPrice!}
+                  externalClb={handleFilter("RANGE")}
+                />
+              </Col>
+              <Col
+                className="d-flex justify-content-center align-items-center"
+                xs={4}
+              >
+                <DropdownBtnWithColor
+                  title={colName}
+                  items={dataColor?.colors!}
+                  externalClb={handleFilter("COLOR")}
+                />
+              </Col>
+            </Row>
+            <Row>
+              {dataBalloons?.balloons &&
+                dataBalloons?.balloons?.length > 0 &&
+                dataBalloons?.balloons?.map((item) => (
+                  <CardComponent
+                    key={item?.id}
+                    name={item?.name!}
+                    subName={item?.subname!}
+                    price={item?.price!}
+                    code={item?.code!}
+                    id={item?.id!}
+                    photo={item?.image!}
+                    measure={"грн."}
+                    link={router.pathname}
+                  />
+                ))}
+            </Row>
+            <PaginationFC
+              page={page}
+              setPage={setPage}
+              pageSize={TAKE}
+              allCount={dataCount?.allBalloons!}
             />
-          </Col>
-          <Col
-            className="d-flex justify-content-center align-items-center"
-            xs={4}
-          >
-            <RangeInput
-              title="Макс. цена"
-              min={0}
-              max={MAXPRICE}
-              step={50}
-              start={price}
-              externalClb={handleFilter("RANGE")}
-            />
-          </Col>
-          <Col
-            className="d-flex justify-content-center align-items-center"
-            xs={4}
-          >
-            <DropdownBtnWithColor
-              title={colName}
-              items={dataColor?.colors!}
-              externalClb={handleFilter("COLOR")}
-            />
-          </Col>
-        </Row>
-        <Row>
-          {dataBalloons?.balloons &&
-            dataBalloons?.balloons?.length > 0 &&
-            dataBalloons?.balloons?.map((item) => (
-              <CardComponent
-                key={item?.id}
-                name={item?.name!}
-                subName={item?.subname!}
-                price={item?.price!}
-                code={item?.code!}
-                id={item?.id!}
-                photo={item?.image!}
-                measure={"грн."}
-                link={router.pathname}
-              />
-            ))}
-        </Row>
-        <PaginationFC
-          page={page}
-          setPage={setPage}
-          pageSize={TAKE}
-          allCount={dataCount?.allBalloons!}
-        />
+          </>
+        )}
       </ContentLayout>
     </NavBar>
   );

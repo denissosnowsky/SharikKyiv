@@ -166,5 +166,29 @@ export const RootQuery = new GraphQLObjectType({
         });
       },
     },
+    maxBouquetPrice: {
+      type: GraphQLInt,
+      async resolve(_parent, _argx, ctx: ApolloServerContext) {
+        return ctx.prisma.bouquet
+          .aggregate({
+            _max: {
+              price: true,
+            },
+          })
+          .then((res) => res._max.price);
+      },
+    },
+    maxBalloonPrice: {
+      type: GraphQLInt,
+      async resolve(_parent, _argx, ctx: ApolloServerContext) {
+        return ctx.prisma.balloon
+          .aggregate({
+            _max: {
+              price: true,
+            },
+          })
+          .then((res) => res._max.price);
+      },
+    },
   },
 });

@@ -3,11 +3,12 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ContentLayout from "../components/Layouts/ContentLayout/ContentLayout";
 import NavBar from "../components/Layouts/Navbar/Navbar";
+import Loading from "../components/Loading/Loading";
 import PhoneBlock from "../components/PhoneBlock/PhoneBlock";
 import SocialNetBlock from "../components/SocialNetBlock/SocialNetBlock";
 import { usePhonesQuery, useSocialNetsQuery } from "../store/generated/graphql";
 
-const Contacts: (() => JSX.Element | undefined) = () => {
+const Contacts: () => JSX.Element | undefined = () => {
   const {
     loading: loadingPhone,
     error: errorPhone,
@@ -19,7 +20,6 @@ const Contacts: (() => JSX.Element | undefined) = () => {
     data: dataSocial,
   } = useSocialNetsQuery();
 
-  if (loadingPhone || loadingSocial) return <h1>Loading...</h1>;
   if (errorPhone || errorSocial) {
     console.log(errorPhone);
     console.log(errorSocial);
@@ -29,34 +29,40 @@ const Contacts: (() => JSX.Element | undefined) = () => {
   return (
     <NavBar title="Контакты">
       <ContentLayout>
-        <Row>
-          <Col
-            className="d-flex justify-content-center flex-column align-items-center"
-            style={{ paddingTop: "70px", paddingBottom: "20px" }}
-          >
-            {dataPhone?.phones?.map((item) => (
-              <PhoneBlock
-                fontSize="30px"
-                number={item!.number}
-                key={item?.id}
-              />
-            ))}
-          </Col>
-        </Row>
-        <Row>
-          <Col className="d-flex justify-content-center">
-            {dataSocial?.socialNets?.map((item) => (
-              <SocialNetBlock
-                key={item?.id}
-                size="70px"
-                margin="10px"
-                title={item!.name}
-                href={item!.link}
-                image={item!.image}
-              />
-            ))}
-          </Col>
-        </Row>
+        {loadingPhone || loadingSocial ? (
+          <Loading />
+        ) : (
+          <>
+            <Row>
+              <Col
+                className="d-flex justify-content-center flex-column align-items-center"
+                style={{ paddingTop: "70px", paddingBottom: "20px" }}
+              >
+                {dataPhone?.phones?.map((item) => (
+                  <PhoneBlock
+                    fontSize="30px"
+                    number={item!.number}
+                    key={item?.id}
+                  />
+                ))}
+              </Col>
+            </Row>
+            <Row>
+              <Col className="d-flex justify-content-center">
+                {dataSocial?.socialNets?.map((item) => (
+                  <SocialNetBlock
+                    key={item?.id}
+                    size="70px"
+                    margin="10px"
+                    title={item!.name}
+                    href={item!.link}
+                    image={item!.image}
+                  />
+                ))}
+              </Col>
+            </Row>
+          </>
+        )}
       </ContentLayout>
     </NavBar>
   );

@@ -276,6 +276,8 @@ export type RootQueryType = {
   deliveryPrice?: Maybe<DeliveryPrice>;
   allBouquets?: Maybe<Scalars['Int']>;
   allBalloons?: Maybe<Scalars['Int']>;
+  maxBouquetPrice?: Maybe<Scalars['Int']>;
+  maxBalloonPrice?: Maybe<Scalars['Int']>;
 };
 
 
@@ -556,6 +558,16 @@ export type DeliveryPriceQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type DeliveryPriceQuery = { __typename?: 'RootQueryType', deliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id: string, price: string }> };
 
+export type MaxBalloonPriceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MaxBalloonPriceQuery = { __typename?: 'RootQueryType', maxBalloonPrice?: Maybe<number> };
+
+export type MaxBouquetPriceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MaxBouquetPriceQuery = { __typename?: 'RootQueryType', maxBouquetPrice?: Maybe<number> };
+
 export type PhonesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -786,6 +798,8 @@ export type RootQueryTypeResolvers<ContextType = any, ParentType extends Resolve
   deliveryPrice?: Resolver<Maybe<ResolversTypes['DeliveryPrice']>, ParentType, ContextType>;
   allBouquets?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<RootQueryTypeAllBouquetsArgs, never>>;
   allBalloons?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<RootQueryTypeAllBalloonsArgs, never>>;
+  maxBouquetPrice?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  maxBalloonPrice?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
 }>;
 
 export type SocialNetResolvers<ContextType = any, ParentType extends ResolversParentTypes['SocialNet'] = ResolversParentTypes['SocialNet']> = ResolversObject<{
@@ -1920,6 +1934,70 @@ export function useDeliveryPriceLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type DeliveryPriceQueryHookResult = ReturnType<typeof useDeliveryPriceQuery>;
 export type DeliveryPriceLazyQueryHookResult = ReturnType<typeof useDeliveryPriceLazyQuery>;
 export type DeliveryPriceQueryResult = Apollo.QueryResult<DeliveryPriceQuery, DeliveryPriceQueryVariables>;
+export const MaxBalloonPriceDocument = gql`
+    query MaxBalloonPrice {
+  maxBalloonPrice
+}
+    `;
+
+/**
+ * __useMaxBalloonPriceQuery__
+ *
+ * To run a query within a React component, call `useMaxBalloonPriceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMaxBalloonPriceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMaxBalloonPriceQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMaxBalloonPriceQuery(baseOptions?: Apollo.QueryHookOptions<MaxBalloonPriceQuery, MaxBalloonPriceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MaxBalloonPriceQuery, MaxBalloonPriceQueryVariables>(MaxBalloonPriceDocument, options);
+      }
+export function useMaxBalloonPriceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaxBalloonPriceQuery, MaxBalloonPriceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MaxBalloonPriceQuery, MaxBalloonPriceQueryVariables>(MaxBalloonPriceDocument, options);
+        }
+export type MaxBalloonPriceQueryHookResult = ReturnType<typeof useMaxBalloonPriceQuery>;
+export type MaxBalloonPriceLazyQueryHookResult = ReturnType<typeof useMaxBalloonPriceLazyQuery>;
+export type MaxBalloonPriceQueryResult = Apollo.QueryResult<MaxBalloonPriceQuery, MaxBalloonPriceQueryVariables>;
+export const MaxBouquetPriceDocument = gql`
+    query MaxBouquetPrice {
+  maxBouquetPrice
+}
+    `;
+
+/**
+ * __useMaxBouquetPriceQuery__
+ *
+ * To run a query within a React component, call `useMaxBouquetPriceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMaxBouquetPriceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMaxBouquetPriceQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMaxBouquetPriceQuery(baseOptions?: Apollo.QueryHookOptions<MaxBouquetPriceQuery, MaxBouquetPriceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MaxBouquetPriceQuery, MaxBouquetPriceQueryVariables>(MaxBouquetPriceDocument, options);
+      }
+export function useMaxBouquetPriceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaxBouquetPriceQuery, MaxBouquetPriceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MaxBouquetPriceQuery, MaxBouquetPriceQueryVariables>(MaxBouquetPriceDocument, options);
+        }
+export type MaxBouquetPriceQueryHookResult = ReturnType<typeof useMaxBouquetPriceQuery>;
+export type MaxBouquetPriceLazyQueryHookResult = ReturnType<typeof useMaxBouquetPriceLazyQuery>;
+export type MaxBouquetPriceQueryResult = Apollo.QueryResult<MaxBouquetPriceQuery, MaxBouquetPriceQueryVariables>;
 export const PhonesDocument = gql`
     query Phones {
   phones {

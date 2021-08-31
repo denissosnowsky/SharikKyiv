@@ -8,18 +8,20 @@ import RangeInput from "../../components/RangeInput/RangeInput";
 import {
   useAllBouquetsQuery,
   useBouquetsQuery,
+  useMaxBouquetPriceQuery,
 } from "../../store/generated/graphql";
 import { useEffect, useState, useCallback } from "react";
 import { NetworkStatus } from "@apollo/client";
 import PaginationFC from "../../components/Pagination/Pagination";
 import { useRouter } from "next/router";
+import Loading from "../../components/Loading/Loading";
 
 const BouqCatalog: NextPage = () => {
   const TAKE = 12;
-  const MAXPRICE = 2000;
+  const PRICE_STEP = 50;
 
   const [page, setPage] = useState(1);
-  const [price, setPrice] = useState(MAXPRICE);
+  const [price, setPrice] = useState<number | undefined>(undefined);
 
   const router = useRouter();
 
@@ -51,10 +53,18 @@ const BouqCatalog: NextPage = () => {
     },
   });
 
+  const {
+    loading: loadingMaxPrice,
+    error: errorMaxPrice,
+    data: dataMaxPrice,
+  } = useMaxBouquetPriceQuery({
+    ssr: false,
+  });
+
   useEffect(() => {
     fetchMoreBouquets({
       variables: {
-        skip: (page-1) * TAKE,
+        skip: (page - 1) * TAKE,
         take: TAKE,
         price: price,
       },
@@ -74,71 +84,78 @@ const BouqCatalog: NextPage = () => {
     [price]
   );
 
-  if (
-    networkStatusBouquets === NetworkStatus.refetch ||
-    networkStatusCount === NetworkStatus.refetch
-  )
-    return <h1>Refetching...</h1>;
-  if (loadingBouquets || loadingCount) return <h1>Loading...</h1>;
-  if (errorBouquets || errorCount) {
-    console.log(errorBouquets ? errorBouquets : errorCount);
+  if (errorBouquets || errorCount || errorMaxPrice) {
+    console.log(
+      errorBouquets ? errorBouquets : errorCount ? errorCount : errorMaxPrice
+    );
   }
 
-  console.log(dataBouquets);
-  console.log(dataCount);
-  console.log(price);
-  console.log(page);
-
+  const maxPrice =
+    dataMaxPrice &&
+    (dataMaxPrice?.maxBouquetPrice! % PRICE_STEP === 0
+      ? dataMaxPrice.maxBouquetPrice
+      : dataMaxPrice?.maxBouquetPrice! +
+        (PRICE_STEP - (dataMaxPrice?.maxBouquetPrice! % PRICE_STEP)));
 
   return (
     <NavBar title="Готовые букеты">
       <ContentLayout>
-        <Row style={{ height: "60px" }}>
-          <Col
-            className="d-flex justify-content-center align-items-center"
-            xs={4}
-          ></Col>
-          <Col
-            className="d-flex justify-content-center align-items-center"
-            xs={4}
-          >
-            <RangeInput
-              title="Макс. цена"
-              min={0}
-              max={MAXPRICE}
-              step={50}
-              start={price}
-              externalClb={handlePrice}
+        {loadingBouquets ||
+        loadingCount ||
+        loadingMaxPrice ||
+        networkStatusBouquets === NetworkStatus.refetch ||
+        networkStatusCount === NetworkStatus.refetch ? (
+          <Loading />
+        ) : (
+          <>
+            <Row style={{ height: "60px" }}>
+              <Col
+                className="d-flex justify-content-center align-items-center"
+                xs={4}
+              ></Col>
+              <Col
+                className="d-flex justify-content-center align-items-center"
+                xs={4}
+              >
+                <RangeInput
+                  title="Макс. цена"
+                  min={PRICE_STEP}
+                  max={maxPrice!}
+                  step={PRICE_STEP}
+                  start={price ? price : maxPrice!}
+                  externalClb={handlePrice}
+                />
+              </Col>
+              <Col
+                className="d-flex justify-content-center align-items-center"
+                xs={4}
+              ></Col>
+            </Row>
+            <Row>
+              {dataBouquets?.bouquets &&
+                dataBouquets?.bouquets?.length > 0 &&
+                dataBouquets?.bouquets?.map((item) => (
+                  <CardComponent
+                    key={item?.id}
+                    name={item?.name!}
+                    subName={item?.subname!}
+                    price={item?.price!}
+                    code={item?.code!}
+                    id={item?.id!}
+                    photo={item?.image!}
+                    measure={"грн."}
+                    link={router.pathname}
+                  />
+                ))}
+            </Row>
+            <PaginationFC
+              page={page}
+              setPage={setPage}
+              pageSize={TAKE}
+              allCount={dataCount?.allBouquets!}
             />
-          </Col>
-          <Col
-            className="d-flex justify-content-center align-items-center"
-            xs={4}
-          ></Col>
-        </Row>
-        <Row>
-          {dataBouquets?.bouquets &&
-            dataBouquets?.bouquets?.length > 0 &&
-            dataBouquets?.bouquets?.map((item) => (
-              <CardComponent
-                key={item?.id}
-                name={item?.name!}
-                subName={item?.subname!}
-                price={item?.price!}
-                code={item?.code!}
-                id={item?.id!}
-                photo={item?.image!}
-                measure={"грн."}
-                link={router.pathname}
-              />
-            ))}
-        </Row>
-        <PaginationFC
-          page={page}
-          setPage={setPage}
-          pageSize={TAKE}
-          allCount={dataCount?.allBouquets!}
-        />
+          </>
+        )}
       </ContentLayout>
     </NavBar>
   );

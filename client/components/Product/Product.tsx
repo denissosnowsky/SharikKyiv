@@ -4,22 +4,32 @@ import Col from "react-bootstrap/Col";
 import Counter from "../../components/Counter/Counter";
 import Button from "react-bootstrap/Button";
 import cs from "classnames";
+import { googleUrl } from "../../config";
 
-interface ProductProps {}
+interface ProductProps {
+  title: string
+  subTitle: string
+  desc: string
+  code: number
+  img: string
+  price: number
+  measure: string
+}
 
-const Product: React.FC<ProductProps> = () => {
+const Product: React.FC<ProductProps> = ( {title, subTitle, desc, code, img, price, measure} ) => {
   return (
     <Row>
       <Col className={cs([s.imageCol], "d-flex", "justify-content-center")}>
         <div style={{ height: "100%", width: "370px" }}>
-          <img src="/photo.jpg" className={s.image} />
+          <img src={`${googleUrl}${img}`} className={s.image} />
         </div>
       </Col>
       <Col className="d-flex flex-column">
-        <div className={s.title}>Букет Краса</div>
+        <div className={s.title}>{title}</div>
+        <div className={s.subTitle}>{subTitle}</div>
+        <div className={s.price}>{price} {measure}</div>
         <div className={s.desc}>
-          <span>Состав</span>: 6 шаров красного хрома, 1 звезда красная, 1
-          сердце синее, 1 фольгированный автомобиль, 1 цифра 100см.
+          <span>Состав</span>: {desc}
         </div>
         <div>
           <Counter minValue={1} />
@@ -29,7 +39,7 @@ const Product: React.FC<ProductProps> = () => {
             В Корзину
           </Button>
         </div>
-        <div className={s.code}>Артикул: 10123</div>
+        <div className={s.code}>Артикул: {code}</div>
       </Col>
     </Row>
   );
