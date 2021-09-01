@@ -15,6 +15,7 @@ import { NetworkStatus } from "@apollo/client";
 import PaginationFC from "../../components/Pagination/Pagination";
 import { useRouter } from "next/router";
 import Loading from "../../components/Loading/Loading";
+import { showError } from "../../utils/showError";
 
 const BouqCatalog: NextPage = () => {
   const TAKE = 12;
@@ -88,7 +89,7 @@ const BouqCatalog: NextPage = () => {
     console.log(
       errorBouquets ? errorBouquets : errorCount ? errorCount : errorMaxPrice
     );
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   const maxPrice =

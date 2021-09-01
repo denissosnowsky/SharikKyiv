@@ -81,7 +81,7 @@ const Product: React.FC<ProductProps> = ({
           {basketStatus.isInBasket ? (
             <Button
               variant="success"
-              className={cs([s.button], "w-50", "btn-sm", "m-1")}
+              className={cs([s.button], "m-1")}
               onClick={() => handleDeleteItem(code)}
             >
               Удалить
@@ -89,7 +89,7 @@ const Product: React.FC<ProductProps> = ({
           ) : (
             <Button
               variant="danger"
-              className={cs([s.button], "w-50", "btn-sm", "m-1")}
+              className={cs([s.button], "m-1")}
               onClick={handleAddToBasket}
             >
               В Корзину

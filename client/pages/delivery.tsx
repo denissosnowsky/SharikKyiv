@@ -4,13 +4,14 @@ import NavBar from "../components/Layouts/Navbar/Navbar";
 import Loading from "../components/Loading/Loading";
 import { useDeliveryPriceQuery } from "../store/generated/graphql";
 import s from "../styles/Delivery.module.css";
+import { showError } from "../utils/showError";
 
 const Delivery: () => JSX.Element | undefined = () => {
   const { loading, error, data } = useDeliveryPriceQuery();
 
   if (error) {
     console.log(error);
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   return (

@@ -4,6 +4,7 @@ import NavBar from "../../components/Layouts/Navbar/Navbar";
 import Loading from "../../components/Loading/Loading";
 import Product from "../../components/Product/Product";
 import { useBalloonQuery } from "../../store/generated/graphql";
+import { showError } from "../../utils/showError";
 
 interface BouqItemProps {}
 
@@ -19,7 +20,7 @@ const BouqItem: React.FC<BouqItemProps> = () => {
 
   if (error) {
     console.log(error);
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу"); 
   }
 
   const balloon = data?.balloon!;

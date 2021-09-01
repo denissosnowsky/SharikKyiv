@@ -12,3 +12,7 @@ export interface OrderType {
 export type BasketVarType = Array<OrderType>;
 
 export const basketVar = makeVar<BasketVarType>([]);
+
+export const errorAlertVar = makeVar<string>('');
+
+export const successAlertVar = makeVar<string>('');

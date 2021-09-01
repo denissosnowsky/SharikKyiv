@@ -14,12 +14,14 @@ import {
   useSocialNetsQuery,
 } from "../../../store/generated/graphql";
 import { useGetBasketValues } from "../../../hooks/useGetBasketValues";
+import { memo } from "react";
+import { showError } from "../../../utils/showError";
 
 interface NavBarProps {
   title: string;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
+const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
 
   const basket = useGetBasketValues(); 
 
@@ -38,7 +40,7 @@ const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
   if (errorPhone || errorSocial) {
     console.log(errorPhone);
     console.log(errorSocial);
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   return (
@@ -128,6 +130,6 @@ const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
       </Row>
     </>
   );
-};
+});
 
 export default NavBar;

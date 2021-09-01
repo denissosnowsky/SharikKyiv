@@ -19,6 +19,7 @@ import { NetworkStatus } from "@apollo/client";
 import PaginationFC from "../../components/Pagination/Pagination";
 import { useRouter } from "next/router";
 import Loading from "../../components/Loading/Loading";
+import { showError } from "../../utils/showError";
 
 const AtomCatalog: NextPage = () => {
   const TAKE = 3;
@@ -143,7 +144,7 @@ const AtomCatalog: NextPage = () => {
         ? errorColor
         : errorMaxPrice
     );
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   const maxPrice =

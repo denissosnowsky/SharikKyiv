@@ -495,7 +495,7 @@ export const Mutation = new GraphQLObjectType({
         order: { type: new GraphQLNonNull(GraphQLJSON) },
       },
       async resolve(_parent, { order }, _ctx) {
-        return await sendTelegramMessage(order);
+        return await sendTelegramMessage(JSON.parse(order));
       },
     },
   },

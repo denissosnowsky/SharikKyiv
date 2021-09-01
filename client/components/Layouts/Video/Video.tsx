@@ -1,3 +1,4 @@
+import { memo } from "react";
 import s from "./Video.module.css";
 
 interface VideoProps {
@@ -5,7 +6,7 @@ interface VideoProps {
   shadow?: boolean;
 }
 
-const Video: React.FC<VideoProps> = ({ src, shadow, children }) => {
+const Video: React.FC<VideoProps> = memo(({ src, shadow, children }) => {
   return (
     <>
       <video className={s.video} autoPlay muted loop>
@@ -15,6 +16,6 @@ const Video: React.FC<VideoProps> = ({ src, shadow, children }) => {
       {children}
     </>
   );
-};
+});
 
 export default Video;

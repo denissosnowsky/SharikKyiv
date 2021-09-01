@@ -7,9 +7,9 @@ import Video from "../components/Layouts/Video/Video";
 import NextNprogress from "nextjs-progressbar";
 import { ApolloProvider } from "@apollo/client";
 import { getApolloClient } from "../store/apollo-client";
+import AlertComponent from "../components/Layouts/AlertComponent/AlertComponent";
 
 function MyApp({ Component, pageProps }: AppProps) {
-
   const client = getApolloClient();
 
   return (
@@ -24,9 +24,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Video src="/video.mp4" shadow={false}>
-        <Component {...pageProps} />
-      </Video>
+      <AlertComponent>
+        <Video src="/video.mp4" shadow={false}>
+          <Component {...pageProps} />
+        </Video>
+      </AlertComponent>
     </ApolloProvider>
   );
 }

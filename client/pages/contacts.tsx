@@ -7,6 +7,7 @@ import Loading from "../components/Loading/Loading";
 import PhoneBlock from "../components/PhoneBlock/PhoneBlock";
 import SocialNetBlock from "../components/SocialNetBlock/SocialNetBlock";
 import { usePhonesQuery, useSocialNetsQuery } from "../store/generated/graphql";
+import { showError } from "../utils/showError";
 
 const Contacts: () => JSX.Element | undefined = () => {
   const {
@@ -23,7 +24,7 @@ const Contacts: () => JSX.Element | undefined = () => {
   if (errorPhone || errorSocial) {
     console.log(errorPhone);
     console.log(errorSocial);
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   return (

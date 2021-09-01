@@ -44,8 +44,9 @@
   font-weight: 500;
 }
 
-.btn {
-  width: 200px;
+.button {
+  width: 130px;
+  height: 35px;
 }
 
 .btnWrapper {

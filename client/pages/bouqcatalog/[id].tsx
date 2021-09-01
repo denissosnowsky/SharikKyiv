@@ -4,6 +4,7 @@ import Product from "../../components/Product/Product";
 import { useBouquetQuery } from "../../store/generated/graphql";
 import { useRouter } from "next/router";
 import Loading from "../../components/Loading/Loading";
+import { showError } from "../../utils/showError";
 
 interface BouqItemProps {}
 
@@ -19,7 +20,7 @@ const BouqItem: React.FC<BouqItemProps> = () => {
 
   if (error) {
     console.log(error);
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   const bouquet = data && data?.bouquet;

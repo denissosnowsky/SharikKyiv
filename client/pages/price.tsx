@@ -6,6 +6,7 @@ import List from "../components/List/List";
 import Loading from "../components/Loading/Loading";
 import { useAssortmentQuery } from "../store/generated/graphql";
 import { arrayConvertor } from "../utils/arrayConvertor";
+import { showError } from "../utils/showError";
 
 const Price: () => JSX.Element | undefined = () => {
   const { loading, error, data } = useAssortmentQuery();
@@ -17,7 +18,7 @@ const Price: () => JSX.Element | undefined = () => {
 
   if (error) {
     console.log(error);
-    return;
+    return showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   return (
