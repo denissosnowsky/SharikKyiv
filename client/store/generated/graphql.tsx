@@ -32,31 +32,39 @@ export type Assortment = {
 
 export type Balloon = {
   __typename?: 'Balloon';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  subname: Scalars['String'];
-  price: Scalars['Int'];
-  description: Scalars['String'];
-  code: Scalars['Int'];
-  image: Scalars['String'];
+  basketStatus?: Maybe<BasketType>;
   category?: Maybe<Category>;
+  code: Scalars['Int'];
   color?: Maybe<Color>;
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  image: Scalars['String'];
+  name: Scalars['String'];
+  price: Scalars['Int'];
+  subname: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type BasketType = {
+  __typename?: 'BasketType';
+  isInBasket?: Maybe<Scalars['Boolean']>;
+  basketQuantity?: Maybe<Scalars['Int']>;
 };
 
 export type Bouquet = {
   __typename?: 'Bouquet';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  subname: Scalars['String'];
-  price: Scalars['Int'];
-  description: Scalars['String'];
+  basketStatus?: Maybe<BasketType>;
   code: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
   image: Scalars['String'];
+  name: Scalars['String'];
   personType: Person;
+  price: Scalars['Int'];
+  subname: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Category = {
@@ -511,7 +519,7 @@ export type BalloonQueryVariables = Exact<{
 }>;
 
 
-export type BalloonQuery = { __typename?: 'RootQueryType', balloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
+export type BalloonQuery = { __typename?: 'RootQueryType', balloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }>, basketStatus?: Maybe<{ __typename?: 'BasketType', isInBasket?: Maybe<boolean>, basketQuantity?: Maybe<number> }> }> };
 
 export type BalloonsQueryVariables = Exact<{
   skip: Scalars['Int'];
@@ -523,14 +531,14 @@ export type BalloonsQueryVariables = Exact<{
 }>;
 
 
-export type BalloonsQuery = { __typename?: 'RootQueryType', balloons?: Maybe<Array<Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }>>> };
+export type BalloonsQuery = { __typename?: 'RootQueryType', balloons?: Maybe<Array<Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }>, basketStatus?: Maybe<{ __typename?: 'BasketType', isInBasket?: Maybe<boolean>, basketQuantity?: Maybe<number> }> }>>> };
 
 export type BouquetQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type BouquetQuery = { __typename?: 'RootQueryType', bouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }> };
+export type BouquetQuery = { __typename?: 'RootQueryType', bouquet?: Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person, basketStatus?: Maybe<{ __typename?: 'BasketType', isInBasket?: Maybe<boolean>, basketQuantity?: Maybe<number> }> }> };
 
 export type BouquetsQueryVariables = Exact<{
   skip: Scalars['Int'];
@@ -541,7 +549,7 @@ export type BouquetsQueryVariables = Exact<{
 }>;
 
 
-export type BouquetsQuery = { __typename?: 'RootQueryType', bouquets?: Maybe<Array<Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person }>>> };
+export type BouquetsQuery = { __typename?: 'RootQueryType', bouquets?: Maybe<Array<Maybe<{ __typename?: 'Bouquet', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, personType: Person, basketStatus?: Maybe<{ __typename?: 'BasketType', isInBasket?: Maybe<boolean>, basketQuantity?: Maybe<number> }> }>>> };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -654,6 +662,7 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Balloon: ResolverTypeWrapper<Balloon>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  BasketType: ResolverTypeWrapper<BasketType>;
   Bouquet: ResolverTypeWrapper<Bouquet>;
   Category: ResolverTypeWrapper<Category>;
   Color: ResolverTypeWrapper<Color>;
@@ -676,6 +685,7 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   Balloon: Balloon;
   Int: Scalars['Int'];
+  BasketType: BasketType;
   Bouquet: Bouquet;
   Category: Category;
   Color: Color;
@@ -698,31 +708,39 @@ export type AssortmentResolvers<ContextType = any, ParentType extends ResolversP
 }>;
 
 export type BalloonResolvers<ContextType = any, ParentType extends ResolversParentTypes['Balloon'] = ResolversParentTypes['Balloon']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  basketStatus?: Resolver<Maybe<ResolversTypes['BasketType']>, ParentType, ContextType>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   color?: Resolver<Maybe<ResolversTypes['Color']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BasketTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['BasketType'] = ResolversParentTypes['BasketType']> = ResolversObject<{
+  isInBasket?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  basketQuantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type BouquetResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bouquet'] = ResolversParentTypes['Bouquet']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  basketStatus?: Resolver<Maybe<ResolversTypes['BasketType']>, ParentType, ContextType>;
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   personType?: Resolver<ResolversTypes['Person'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  subname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -817,6 +835,7 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export type Resolvers<ContextType = any> = ResolversObject<{
   Assortment?: AssortmentResolvers<ContextType>;
   Balloon?: BalloonResolvers<ContextType>;
+  BasketType?: BasketTypeResolvers<ContextType>;
   Bouquet?: BouquetResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   Color?: ColorResolvers<ContextType>;
@@ -1642,6 +1661,10 @@ export const BalloonDocument = gql`
       id
       name
     }
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }
     `;
@@ -1698,6 +1721,10 @@ export const BalloonsDocument = gql`
       id
       name
     }
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }
     `;
@@ -1745,6 +1772,10 @@ export const BouquetDocument = gql`
     code
     image
     personType
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }
     `;
@@ -1793,6 +1824,10 @@ export const BouquetsDocument = gql`
     code
     image
     personType
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }
     `;

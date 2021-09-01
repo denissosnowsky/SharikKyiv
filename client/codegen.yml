@@ -1,6 +1,7 @@
 overwrite: true
 schema:
   - "http://localhost:5000/graphql"
+  - "client-schema.gql"
 documents:
   - "store/queries/*.gql"
   - "store/mutations/*.gql"

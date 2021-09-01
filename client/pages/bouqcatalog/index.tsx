@@ -88,6 +88,7 @@ const BouqCatalog: NextPage = () => {
     console.log(
       errorBouquets ? errorBouquets : errorCount ? errorCount : errorMaxPrice
     );
+    return;
   }
 
   const maxPrice =
@@ -145,6 +146,8 @@ const BouqCatalog: NextPage = () => {
                     photo={item?.image!}
                     measure={"грн."}
                     link={router.pathname}
+                    description={item?.description!}
+                    basketStatus={item?.basketStatus!}
                   />
                 ))}
             </Row>

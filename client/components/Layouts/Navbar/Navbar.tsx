@@ -13,12 +13,16 @@ import {
   usePhonesQuery,
   useSocialNetsQuery,
 } from "../../../store/generated/graphql";
+import { useGetBasketValues } from "../../../hooks/useGetBasketValues";
 
 interface NavBarProps {
   title: string;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
+
+  const basket = useGetBasketValues(); 
+
   const {
     loading: loadingPhone,
     error: errorPhone,
@@ -110,7 +114,7 @@ const NavBar: React.FC<NavBarProps> = ({ children, title }) => {
               <Link href="/basket">
                 <a>
                   <i className="bi bi-cart2"></i>Корзина{" "}
-                  <Badge bg="danger">0</Badge>
+                  <Badge bg="danger">{basket.length}</Badge>
                 </a>
               </Link>
             </Nav>

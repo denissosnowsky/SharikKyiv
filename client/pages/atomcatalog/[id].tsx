@@ -19,9 +19,10 @@ const BouqItem: React.FC<BouqItemProps> = () => {
 
   if (error) {
     console.log(error);
+    return;
   }
 
-  const balloon = data && data.balloon;
+  const balloon = data?.balloon!;
 
   return (
     <NavBar title={"Товар"}>
@@ -35,6 +36,7 @@ const BouqItem: React.FC<BouqItemProps> = () => {
             img={balloon!.image}
             price={balloon!.price}
             measure={"грн."}
+            basketStatus={balloon!.basketStatus!}
           />
         )}
       </ContentLayout>

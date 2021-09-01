@@ -2,14 +2,15 @@ import { memo, useEffect, useState } from "react";
 
 interface CounterProps {
   minValue: number;
+  start?: number | undefined;
   clb?: (value: number) => void;
 }
 
-const Counter: React.FC<CounterProps> = ({ clb, minValue }) => {
-  const [count, setCount] = useState<number>(minValue);
+const Counter: React.FC<CounterProps> = ({ clb, minValue, start }) => {
+  const [count, setCount] = useState<number>(start ? start : minValue);
 
   useEffect(() => {
-    clb && clb(minValue);
+    clb && clb(count);
   }, []);
 
   const handlePlus = () => {

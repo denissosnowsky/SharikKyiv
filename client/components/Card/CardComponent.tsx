@@ -6,6 +6,10 @@ import cs from "classnames";
 import Counter from "../Counter/Counter";
 import Link from "next/link";
 import { googleUrl } from "../../config";
+import { useState } from "react";
+import { addToBasket } from "../../utils/addToBasket";
+import { BasketStatusType } from "../../types/BasketTypes";
+import { deleteFromBasket } from "../../utils/deleteFromBasket";
 
 interface CardComponentProps {
   photo: string;
@@ -16,6 +20,8 @@ interface CardComponentProps {
   id: string;
   measure: string;
   link: string;
+  description: string;
+  basketStatus: BasketStatusType;
 }
 
 const CardComponent: React.FC<CardComponentProps> = ({
@@ -26,32 +32,73 @@ const CardComponent: React.FC<CardComponentProps> = ({
   code,
   id,
   measure,
-  link
+  link,
+  description,
+  basketStatus,
 }) => {
+  const MIN_VALUE = 1;
+  const [count, setCount] = useState<number>(MIN_VALUE);
+
+  const fetchCurrentCount = (count: number) => {
+    setCount(count);
+  };
+
+  const handleDeleteItem = (id: number) => {
+    deleteFromBasket && deleteFromBasket(id);
+  };
+
+  const handleAddToBasket = () => {
+    addToBasket({
+      name: `${name} ${subName}`,
+      price,
+      quantity: count,
+      code,
+      description,
+      image: `${googleUrl}${photo}`,
+    });
+  };
+
   return (
     <Col className={s.card} xs={4}>
       <Card
         style={{ width: "18rem", borderRadius: "15px" }}
         className="border border-1"
       >
-        <Card.Img variant="top" src={`${googleUrl}${photo}`} className={s.img} />
+        <Card.Img
+          variant="top"
+          src={`${googleUrl}${photo}`}
+          className={s.img}
+        />
         <Card.Body className="d-flex flex-column align-items-center pb-2">
           <Card.Title className={s.title}>{name}</Card.Title>
           <Card.Title className={s.subTitle}>{subName}</Card.Title>
           <Card.Title className={s.price}>
             {price} {measure}
           </Card.Title>
-          <Counter minValue={1} />
-          <Link href={`/basket`}>
-            <a className={s.link}>
-              <Button
-                variant="outline-danger"
-                className={cs([s.button], "w-50", "btn-sm", "m-1")}
-              >
-                В Корзину
-              </Button>
-            </a>
-          </Link>
+          <Counter
+            minValue={MIN_VALUE}
+            clb={fetchCurrentCount}
+            start={
+              basketStatus.isInBasket ? basketStatus.basketQuantity : undefined
+            }
+          />
+          {basketStatus.isInBasket ? (
+            <Button
+              variant="success"
+              className={cs([s.button], "w-50", "btn-sm", "m-1")}
+              onClick={()=>handleDeleteItem(code)}
+            >
+              Удалить
+            </Button>
+          ) : (
+            <Button
+              variant="outline-danger"
+              className={cs([s.button], "w-50", "btn-sm", "m-1")}
+              onClick={handleAddToBasket}
+            >
+              В Корзину
+            </Button>
+          )}
           <Link href={`${link}/${id}`}>
             <a className={s.link}>
               <Button

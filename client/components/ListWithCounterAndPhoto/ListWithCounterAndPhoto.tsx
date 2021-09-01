@@ -8,17 +8,12 @@ import cs from "classnames";
 import { useCounterInitState } from "../../hooks/useCounterInitState";
 import { sumOfObjectValues } from "../../utils/sumOfObjectValues";
 import { counterStateChanger } from "../../utils/counterStateChanger";
-
-type FetchedDataObj = {
-  leftText: string;
-  rightText: string;
-  id: string;
-  image: string;
-  description: string;
-};
+import { BasketObjType } from "../../types/BasketTypes";
+import { deleteFromBasket } from "../../utils/deleteFromBasket";
+import { changeQuantInBasket } from "../../utils/changeQuantInBasket";
 
 interface ListWithCounterAndPhotoProps {
-  data: Array<FetchedDataObj>;
+  data: Array<BasketObjType>;
   measure: string;
 }
 
@@ -26,8 +21,8 @@ const ListWithCounterAndPhoto: React.FC<ListWithCounterAndPhotoProps> = ({
   data,
   measure,
 }) => {
-  // make an object for initial valeu for useState. Made from id of the fetched data
-  const initialState = useCounterInitState<FetchedDataObj>(data);
+  // make an object for initial value for useState. Made from id of the fetched data. Save here - 'id: price'
+  const initialState = useCounterInitState(data);
 
   const [counters, setCounters] =
     useState<Record<string, number>>(initialState);
@@ -35,14 +30,16 @@ const ListWithCounterAndPhoto: React.FC<ListWithCounterAndPhotoProps> = ({
 
   useMemo(() => setSum(sumOfObjectValues(counters)), [counters]);
 
-  const handleCounterPrice = (property: string, initValue: number) => {
+  const handleCounterPrice = (id: number, initValue: number) => {
     return (value: number) => {
-      setCounters(counterStateChanger(counters, property, value, initValue));
+      setCounters(counterStateChanger(counters, id, value, initValue));
+      changeQuantInBasket && changeQuantInBasket(id, value);
     };
   };
 
-  const handleDeleteItem = (id: string) => {
-    alert(id);
+  const handleDeleteItem = (id: number, initValue: number) => {
+    setCounters(counterStateChanger(counters, id, 0, initValue));
+    deleteFromBasket && deleteFromBasket(id);
   };
 
   return (
@@ -62,6 +59,7 @@ const ListWithCounterAndPhoto: React.FC<ListWithCounterAndPhotoProps> = ({
               <Counter
                 clb={handleCounterPrice(i.id, Number(i.rightText))}
                 minValue={1}
+                start={i.quantity}
               />
             </Col>
             <Col xs={2} className={s.lastCol}>
@@ -70,7 +68,7 @@ const ListWithCounterAndPhoto: React.FC<ListWithCounterAndPhotoProps> = ({
             <Col xs={1}>
               <i
                 className={cs([s.bin], "bi", "bi-trash-fill")}
-                onClick={() => handleDeleteItem(i.id)}
+                onClick={() => handleDeleteItem(i.id, Number(i.rightText))}
               ></i>
             </Col>
           </Row>

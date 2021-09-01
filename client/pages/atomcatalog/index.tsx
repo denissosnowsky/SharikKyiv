@@ -143,6 +143,7 @@ const AtomCatalog: NextPage = () => {
         ? errorColor
         : errorMaxPrice
     );
+    return;
   }
 
   const maxPrice =
@@ -213,6 +214,8 @@ const AtomCatalog: NextPage = () => {
                     photo={item?.image!}
                     measure={"грн."}
                     link={router.pathname}
+                    description={item?.description!}
+                    basketStatus={item?.basketStatus!}
                   />
                 ))}
             </Row>

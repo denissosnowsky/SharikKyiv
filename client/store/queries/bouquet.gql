@@ -8,5 +8,9 @@ query Bouquet($id: ID!) {
     code
     image
     personType
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }

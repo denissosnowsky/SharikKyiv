@@ -15,5 +15,9 @@ query Balloon($id: ID!) {
       id
       name
     }
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }

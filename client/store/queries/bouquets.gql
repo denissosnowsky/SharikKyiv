@@ -1,5 +1,17 @@
-query Bouquets($skip: Int!, $take: Int!, $price: Int, $personType: Person, $code: Int ) {
-  bouquets(skip: $skip, take: $take, price: $price, personType: $personType, code: $code) {
+query Bouquets(
+  $skip: Int!
+  $take: Int!
+  $price: Int
+  $personType: Person
+  $code: Int
+) {
+  bouquets(
+    skip: $skip
+    take: $take
+    price: $price
+    personType: $personType
+    code: $code
+  ) {
     id
     name
     subname
@@ -8,5 +20,9 @@ query Bouquets($skip: Int!, $take: Int!, $price: Int, $personType: Person, $code
     code
     image
     personType
+    basketStatus @client {
+      isInBasket
+      basketQuantity
+    }
   }
 }

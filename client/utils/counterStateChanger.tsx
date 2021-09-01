@@ -1,11 +1,11 @@
 export const counterStateChanger = (
   counters: Record<string, number>,
-  property: string,
+  id: number,
   value: number,
   initValue: number
 ) => {
   return (countersPrev = counters) => ({
     ...countersPrev,
-    [property]: value * initValue,
+    [id]: value * initValue,
   });
 };
