@@ -3,7 +3,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { useState } from "react";
 import s from "./DropdownBtn.module.css";
 import { Maybe } from "graphql/jsutils/Maybe";
-import { switchTitle } from "../../utils/switchTitle";
 
 interface DropdownBtnProps {
   title: string;

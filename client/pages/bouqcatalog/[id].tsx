@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 import Loading from "../../components/Loading/Loading";
 import { showError } from "../../utils/showError";
 
-interface BouqItemProps {}
 
-const BouqItem: React.FC<BouqItemProps> = () => {
+const BouqItem: () => void | JSX.Element = () => {
   const router = useRouter();
 
   const { loading, error, data } = useBouquetQuery({

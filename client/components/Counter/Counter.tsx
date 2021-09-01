@@ -1,8 +1,9 @@
+import { Maybe } from "graphql/jsutils/Maybe";
 import { memo, useEffect, useState } from "react";
 
 interface CounterProps {
   minValue: number;
-  start?: number | undefined;
+  start?: number | undefined | Maybe<number> ;
   clb?: (value: number) => void;
 }
 

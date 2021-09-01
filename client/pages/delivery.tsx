@@ -6,7 +6,7 @@ import { useDeliveryPriceQuery } from "../store/generated/graphql";
 import s from "../styles/Delivery.module.css";
 import { showError } from "../utils/showError";
 
-const Delivery: () => JSX.Element | undefined = () => {
+const Delivery: () => JSX.Element | void = () => {
   const { loading, error, data } = useDeliveryPriceQuery();
 
   if (error) {

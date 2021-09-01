@@ -9,7 +9,7 @@ import SocialNetBlock from "../components/SocialNetBlock/SocialNetBlock";
 import { usePhonesQuery, useSocialNetsQuery } from "../store/generated/graphql";
 import { showError } from "../utils/showError";
 
-const Contacts: () => JSX.Element | undefined = () => {
+const Contacts: () => JSX.Element | void = () => {
   const {
     loading: loadingPhone,
     error: errorPhone,

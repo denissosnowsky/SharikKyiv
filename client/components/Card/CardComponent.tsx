@@ -79,10 +79,10 @@ const CardComponent: React.FC<CardComponentProps> = ({
             minValue={MIN_VALUE}
             clb={fetchCurrentCount}
             start={
-              basketStatus.isInBasket ? basketStatus.basketQuantity : undefined
+              basketStatus!.isInBasket ? basketStatus!.basketQuantity : undefined
             }
           />
-          {basketStatus.isInBasket ? (
+          {basketStatus!.isInBasket ? (
             <Button
               variant="success"
               className={cs([s.button], "w-50", "btn-sm", "m-1")}

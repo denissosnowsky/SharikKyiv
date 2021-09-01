@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import ContentLayout from "../../components/Layouts/ContentLayout/ContentLayout";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,15 +16,40 @@ import PaginationFC from "../../components/Pagination/Pagination";
 import { useRouter } from "next/router";
 import Loading from "../../components/Loading/Loading";
 import { showError } from "../../utils/showError";
+import s from "../../styles/BouqCatalog.module.css";
+import { useSynchronizeUrl } from "../../hooks/useSynchronizeUrl";
 
-const BouqCatalog: NextPage = () => {
+interface BouqCatalogPropsType {
+  priceQuery: string | null;
+  pageQuery: string | null;
+}
+
+const BouqCatalog: ({
+  priceQuery,
+  pageQuery,
+}: React.PropsWithChildren<BouqCatalogPropsType>) => void | JSX.Element = ({
+  priceQuery,
+  pageQuery,
+}) => {
   const TAKE = 12;
   const PRICE_STEP = 50;
 
-  const [page, setPage] = useState(1);
-  const [price, setPrice] = useState<number | undefined>(undefined);
+  const params =
+    typeof window != "undefined"
+      ? new URLSearchParams(window.location.search)
+      : undefined;
+
+  const [page, setPage] = useState(Number(pageQuery) ? Number(pageQuery) : 1);
+  const [price, setPrice] = useState<number | undefined>(
+    Number(priceQuery) ? Number(priceQuery) : undefined
+  );
 
   const router = useRouter();
+
+  useSynchronizeUrl(params!, [
+    { value: page, queryName: "page" },
+    { value: price, queryName: "price" },
+  ]);
 
   const {
     loading: loadingBouquets,
@@ -134,8 +159,7 @@ const BouqCatalog: NextPage = () => {
               ></Col>
             </Row>
             <Row>
-              {dataBouquets?.bouquets &&
-                dataBouquets?.bouquets?.length > 0 &&
+              {dataBouquets?.bouquets && dataBouquets?.bouquets?.length > 0 ? (
                 dataBouquets?.bouquets?.map((item) => (
                   <CardComponent
                     key={item?.id}
@@ -150,7 +174,10 @@ const BouqCatalog: NextPage = () => {
                     description={item?.description!}
                     basketStatus={item?.basketStatus!}
                   />
-                ))}
+                ))
+              ) : (
+                <div className={s.emptyData}>Таких шаров нету</div>
+              )}
             </Row>
             <PaginationFC
               page={page}
@@ -163,6 +190,17 @@ const BouqCatalog: NextPage = () => {
       </ContentLayout>
     </NavBar>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const priceQuery = query.price ? query.price : null;
+  const pageQuery = query.page ? query.page : null;
+  return {
+    props: {
+      priceQuery,
+      pageQuery,
+    },
+  };
 };
 
 export default BouqCatalog;

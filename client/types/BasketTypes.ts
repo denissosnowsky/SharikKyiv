@@ -1,7 +1,9 @@
-export interface BasketStatusType {
-  basketQuantity: number;
-  isInBasket: boolean;
-}
+import { Maybe } from "graphql/jsutils/Maybe";
+
+export type BasketStatusType = Maybe<{
+  isInBasket?: Maybe<boolean> | undefined;
+  basketQuantity?: Maybe<number> | undefined;
+}>
 
 export type BasketObjType = {
   leftText: string;

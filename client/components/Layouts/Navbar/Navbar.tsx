@@ -14,7 +14,7 @@ import {
   useSocialNetsQuery,
 } from "../../../store/generated/graphql";
 import { useGetBasketValues } from "../../../hooks/useGetBasketValues";
-import { memo } from "react";
+import { memo, ReactNode} from "react";
 import { showError } from "../../../utils/showError";
 
 interface NavBarProps {

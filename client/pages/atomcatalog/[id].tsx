@@ -6,9 +6,8 @@ import Product from "../../components/Product/Product";
 import { useBalloonQuery } from "../../store/generated/graphql";
 import { showError } from "../../utils/showError";
 
-interface BouqItemProps {}
 
-const BouqItem: React.FC<BouqItemProps> = () => {
+const BouqItem: () => void | JSX.Element = () => {
   const router = useRouter();
 
   const { loading, error, data } = useBalloonQuery({

@@ -7,7 +7,7 @@ import { useAssortmentQuery } from "../store/generated/graphql";
 import { arrayConvertor } from "../utils/arrayConvertor";
 import { showError } from "../utils/showError";
 
-const Calculator: () => JSX.Element | undefined = () => {
+const Calculator: () => void | JSX.Element = () => {
   const { loading, error, data } = useAssortmentQuery();
 
   const convertedArr = useMemo(

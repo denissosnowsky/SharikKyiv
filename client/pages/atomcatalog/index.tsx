@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import ContentLayout from "../../components/Layouts/ContentLayout/ContentLayout";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -20,40 +20,63 @@ import PaginationFC from "../../components/Pagination/Pagination";
 import { useRouter } from "next/router";
 import Loading from "../../components/Loading/Loading";
 import { showError } from "../../utils/showError";
+import s from "../../styles/AtomCatalog.module.css";
+import { useSynchronizeUrl } from "../../hooks/useSynchronizeUrl";
 
-const AtomCatalog: NextPage = () => {
+interface AtomCatalogPropsType {
+  priceQuery: string | null;
+  categoryQuery: string | null;
+  colorQuery: string | null;
+  pageQuery: string | null;
+}
+
+const AtomCatalog: ({
+  priceQuery,
+  categoryQuery,
+  colorQuery,
+  pageQuery,
+}: React.PropsWithChildren<AtomCatalogPropsType>) => void | JSX.Element = ({
+  priceQuery,
+  categoryQuery,
+  colorQuery,
+  pageQuery,
+}) => {
   const TAKE = 3;
   const PRICE_STEP = 50;
 
-  const [page, setPage] = useState(1);
-  const [price, setPrice] = useState<number | undefined>(undefined);
-  const [category, setCategory] = useState<string | undefined>(undefined);
-  const [color, setColor] = useState<string | undefined>(undefined);
-  const [catName, setCatName] = useState<string>("");
-  const [colName, setColName] = useState<string>("");
-
-  useEffect(() => {
-    const newState = category
-      ? dataCategory?.categories?.find((o) => o?.id === category)?.name
-      : "Выбрать категорию | Все";
-    setCatName(newState!);
-  }, [category]);
-
-  useEffect(() => {
-    const newState = color
-      ? dataColor?.colors?.find((o) => o?.id === color)?.name
-      : "Выбрать цвет | Все";
-    setColName(newState!);
-  }, [color]);
+  const params =
+    typeof window != "undefined"
+      ? new URLSearchParams(window.location.search)
+      : undefined;
 
   const router = useRouter();
+
+  const [page, setPage] = useState(Number(pageQuery) ? Number(pageQuery) : 1);
+  const [price, setPrice] = useState<number | undefined>(
+    Number(priceQuery) ? Number(priceQuery) : undefined
+  );
+  const [category, setCategory] = useState<string | undefined>(
+    categoryQuery ? categoryQuery : undefined
+  );
+  const [color, setColor] = useState<string | undefined>(
+    colorQuery ? colorQuery : undefined
+  );
+  const [catName, setCatName] = useState<string>("Выбрать категорию | Все");
+  const [colName, setColName] = useState<string>("Выбрать цвет | Все");
+
+  useSynchronizeUrl(params!, [
+    { value: page, queryName: "page" },
+    { value: category, queryName: "category" },
+    { value: price, queryName: "price" },
+    { value: color, queryName: "color" },
+  ]);
 
   const {
     loading: loadingBalloons,
     error: errorBalloons,
     data: dataBalloons,
     fetchMore,
-    networkStatus,
+    networkStatus: networkStatusBalloons,
   } = useBalloonsQuery({
     variables: {
       skip: (page - 1) * TAKE,
@@ -90,9 +113,7 @@ const AtomCatalog: NextPage = () => {
     loading: loadingColor,
     error: errorColor,
     data: dataColor,
-  } = useColorsQuery({
-    ssr: false,
-  });
+  } = useColorsQuery();
 
   const {
     loading: loadingMaxPrice,
@@ -101,6 +122,20 @@ const AtomCatalog: NextPage = () => {
   } = useMaxBalloonPriceQuery({
     ssr: false,
   });
+
+  useEffect(() => {
+    const newState = category
+      ? dataCategory?.categories?.find((o) => o?.id === category)?.name
+      : "Выбрать категорию | Все";
+    setCatName(newState!);
+  }, [category]);
+
+  useEffect(() => {
+    const newState = color
+      ? dataColor?.colors?.find((o) => o?.id === color)?.name
+      : "Выбрать цвет | Все";
+    setColName(newState!);
+  }, [color]);
 
   useEffect(() => {
     fetchMore({
@@ -162,7 +197,8 @@ const AtomCatalog: NextPage = () => {
         loadingCategory ||
         loadingColor ||
         loadingMaxPrice ||
-        networkStatus === NetworkStatus.refetch ? (
+        networkStatusBalloons === NetworkStatus.refetch ||
+        networkStatusCount === NetworkStatus.refetch ? (
           <Loading />
         ) : (
           <>
@@ -202,8 +238,7 @@ const AtomCatalog: NextPage = () => {
               </Col>
             </Row>
             <Row>
-              {dataBalloons?.balloons &&
-                dataBalloons?.balloons?.length > 0 &&
+              {dataBalloons?.balloons && dataBalloons?.balloons?.length > 0 ? (
                 dataBalloons?.balloons?.map((item) => (
                   <CardComponent
                     key={item?.id}
@@ -218,7 +253,10 @@ const AtomCatalog: NextPage = () => {
                     description={item?.description!}
                     basketStatus={item?.basketStatus!}
                   />
-                ))}
+                ))
+              ) : (
+                <div className={s.emptyData}>Таких шаров нету</div>
+              )}
             </Row>
             <PaginationFC
               page={page}
@@ -231,6 +269,21 @@ const AtomCatalog: NextPage = () => {
       </ContentLayout>
     </NavBar>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const priceQuery = query.price ? query.price : null;
+  const categoryQuery = query.category ? query.category : null;
+  const colorQuery = query.color ? query.color : null;
+  const pageQuery = query.page ? query.page : null;
+  return {
+    props: {
+      priceQuery,
+      categoryQuery,
+      colorQuery,
+      pageQuery,
+    },
+  };
 };
 
 export default AtomCatalog;
