@@ -7,10 +7,10 @@ import {
   ReqResExpress,
 } from "./types/ApolloServerContext";
 import prisma from "./prisma/client";
-import { graphqlUploadExpress } from 'graphql-upload';
-import * as path from 'path';
+import { graphqlUploadExpress } from "graphql-upload";
+import * as path from "path";
 import { Storage } from "@google-cloud/storage";
-
+import cors from "cors";
 
 async function start() {
   try {
@@ -18,7 +18,7 @@ async function start() {
 
     const gc = new Storage({
       keyFilename: path.join(__dirname, "../sharikkyiv-5c3745d593ac.json"),
-      projectId: "sharikkyiv"
+      projectId: "sharikkyiv",
     });
 
     const googleBucket = gc.bucket("sharikkyiv");
@@ -29,7 +29,7 @@ async function start() {
       req,
       res,
       prisma,
-      googleBucket
+      googleBucket,
     });
 
     const server = new ApolloServer({
@@ -38,6 +38,16 @@ async function start() {
     });
 
     const app = express();
+
+    const whitelist: Array<string> = [
+      config.get("clientUrlhttp"),
+      config.get("clientUrlhttps"),
+      config.get("adminUrl"),
+    ];
+    const corsOptions = {
+      origin: whitelist
+    };
+    app.use(cors(corsOptions));
 
     await server.start();
 
