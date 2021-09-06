@@ -38,7 +38,7 @@ export type Balloon = {
   color?: Maybe<Color>;
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['String'];
   image: Scalars['String'];
   name: Scalars['String'];
   price: Scalars['Int'];
@@ -58,7 +58,7 @@ export type Bouquet = {
   code: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['String'];
   image: Scalars['String'];
   name: Scalars['String'];
   personType: Person;
@@ -111,7 +111,8 @@ export type Mutation = {
   deletePhone?: Maybe<Phone>;
   addSocialNet?: Maybe<SocialNet>;
   deleteSocialNet?: Maybe<SocialNet>;
-  changeManyPrices?: Maybe<Balloon>;
+  changeManyPricesToBalloons?: Maybe<Scalars['Boolean']>;
+  changeManyPricesToBouquets?: Maybe<Scalars['Boolean']>;
   sendOrder?: Maybe<Scalars['Boolean']>;
 };
 
@@ -128,7 +129,7 @@ export type MutationAddBouquetArgs = {
 
 
 export type MutationChangeBouquetArgs = {
-  id: Scalars['ID'];
+  id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   subname?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
@@ -140,7 +141,7 @@ export type MutationChangeBouquetArgs = {
 
 
 export type MutationDeleteBouquetArgs = {
-  id: Scalars['ID'];
+  id: Scalars['String'];
 };
 
 
@@ -157,7 +158,7 @@ export type MutationAddBalloonArgs = {
 
 
 export type MutationChangeBalloonArgs = {
-  id: Scalars['ID'];
+  id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   subname?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
@@ -170,7 +171,7 @@ export type MutationChangeBalloonArgs = {
 
 
 export type MutationDeleteBalloonArgs = {
-  id: Scalars['ID'];
+  id: Scalars['String'];
 };
 
 
@@ -248,9 +249,15 @@ export type MutationDeleteSocialNetArgs = {
 };
 
 
-export type MutationChangeManyPricesArgs = {
-  oldPrice: Scalars['String'];
-  newPrice: Scalars['String'];
+export type MutationChangeManyPricesToBalloonsArgs = {
+  oldPrice: Scalars['Int'];
+  newPrice: Scalars['Int'];
+};
+
+
+export type MutationChangeManyPricesToBouquetsArgs = {
+  oldPrice: Scalars['Int'];
+  newPrice: Scalars['Int'];
 };
 
 
@@ -290,7 +297,7 @@ export type RootQueryType = {
 
 
 export type RootQueryTypeBouquetArgs = {
-  id: Scalars['ID'];
+  id: Scalars['String'];
 };
 
 
@@ -304,7 +311,7 @@ export type RootQueryTypeBouquetsArgs = {
 
 
 export type RootQueryTypeBalloonArgs = {
-  id: Scalars['ID'];
+  id: Scalars['String'];
 };
 
 
@@ -349,6 +356,20 @@ export type AddAssortmentMutationVariables = Exact<{
 
 
 export type AddAssortmentMutation = { __typename?: 'Mutation', addAssortment?: Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }> };
+
+export type AddBalloonMutationVariables = Exact<{
+  name: Scalars['String'];
+  subname: Scalars['String'];
+  price: Scalars['Int'];
+  description: Scalars['String'];
+  code: Scalars['Int'];
+  image: Scalars['Upload'];
+  categoryId: Scalars['ID'];
+  colorId: Scalars['ID'];
+}>;
+
+
+export type AddBalloonMutation = { __typename?: 'Mutation', addBalloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
 
 export type AddBouquetMutationVariables = Exact<{
   name: Scalars['String'];
@@ -411,8 +432,23 @@ export type ChangeAssortmantMutationVariables = Exact<{
 
 export type ChangeAssortmantMutation = { __typename?: 'Mutation', changeAssortmant?: Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }> };
 
+export type ChangeBalloonMutationVariables = Exact<{
+  id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  subname?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Int']>;
+  description?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['Int']>;
+  image?: Maybe<Scalars['Upload']>;
+  categoryId?: Maybe<Scalars['ID']>;
+  colorId?: Maybe<Scalars['ID']>;
+}>;
+
+
+export type ChangeBalloonMutation = { __typename?: 'Mutation', changeBalloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
+
 export type ChangeBouquetMutationVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   subname?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
@@ -427,19 +463,27 @@ export type ChangeBouquetMutation = { __typename?: 'Mutation', changeBouquet?: M
 
 export type ChangeDeliveryPriceMutationVariables = Exact<{
   id: Scalars['ID'];
-  price?: Maybe<Scalars['String']>;
+  price: Scalars['String'];
 }>;
 
 
 export type ChangeDeliveryPriceMutation = { __typename?: 'Mutation', changeDeliveryPrice?: Maybe<{ __typename?: 'DeliveryPrice', id: string, price: string }> };
 
-export type ChangeManyPricesMutationVariables = Exact<{
-  oldPrice: Scalars['String'];
-  newPrice: Scalars['String'];
+export type ChangeManyPricesToBalloonsMutationVariables = Exact<{
+  oldPrice: Scalars['Int'];
+  newPrice: Scalars['Int'];
 }>;
 
 
-export type ChangeManyPricesMutation = { __typename?: 'Mutation', changeManyPrices?: Maybe<{ __typename?: 'Balloon', id: string, price: number }> };
+export type ChangeManyPricesToBalloonsMutation = { __typename?: 'Mutation', changeManyPricesToBalloons?: Maybe<boolean> };
+
+export type ChangeManyPricesToBouquetsMutationVariables = Exact<{
+  oldPrice: Scalars['Int'];
+  newPrice: Scalars['Int'];
+}>;
+
+
+export type ChangeManyPricesToBouquetsMutation = { __typename?: 'Mutation', changeManyPricesToBouquets?: Maybe<boolean> };
 
 export type DeleteAssortmantMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -448,8 +492,15 @@ export type DeleteAssortmantMutationVariables = Exact<{
 
 export type DeleteAssortmantMutation = { __typename?: 'Mutation', deleteAssortmant?: Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }> };
 
+export type DeleteBalloonMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteBalloonMutation = { __typename?: 'Mutation', deleteBalloon?: Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }> }> };
+
 export type DeleteBouquetMutationVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['String'];
 }>;
 
 
@@ -515,7 +566,7 @@ export type AssortmentQueryVariables = Exact<{ [key: string]: never; }>;
 export type AssortmentQuery = { __typename?: 'RootQueryType', assortment?: Maybe<Array<Maybe<{ __typename?: 'Assortment', id: string, name: string, price: string, fixed: boolean }>>> };
 
 export type BalloonQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['String'];
 }>;
 
 
@@ -534,7 +585,7 @@ export type BalloonsQueryVariables = Exact<{
 export type BalloonsQuery = { __typename?: 'RootQueryType', balloons?: Maybe<Array<Maybe<{ __typename?: 'Balloon', id: string, name: string, subname: string, price: number, description: string, code: number, image: string, category?: Maybe<{ __typename?: 'Category', id: string, name: string }>, color?: Maybe<{ __typename?: 'Color', id: string, name: string }>, basketStatus?: Maybe<{ __typename?: 'BasketType', isInBasket?: Maybe<boolean>, basketQuantity?: Maybe<number> }> }>>> };
 
 export type BouquetQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['String'];
 }>;
 
 
@@ -714,7 +765,7 @@ export type BalloonResolvers<ContextType = any, ParentType extends ResolversPare
   color?: Resolver<Maybe<ResolversTypes['Color']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -734,7 +785,7 @@ export type BouquetResolvers<ContextType = any, ParentType extends ResolversPare
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   personType?: Resolver<ResolversTypes['Person'], ParentType, ContextType>;
@@ -793,7 +844,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deletePhone?: Resolver<Maybe<ResolversTypes['Phone']>, ParentType, ContextType, RequireFields<MutationDeletePhoneArgs, 'id'>>;
   addSocialNet?: Resolver<Maybe<ResolversTypes['SocialNet']>, ParentType, ContextType, RequireFields<MutationAddSocialNetArgs, 'name' | 'link' | 'image'>>;
   deleteSocialNet?: Resolver<Maybe<ResolversTypes['SocialNet']>, ParentType, ContextType, RequireFields<MutationDeleteSocialNetArgs, 'id'>>;
-  changeManyPrices?: Resolver<Maybe<ResolversTypes['Balloon']>, ParentType, ContextType, RequireFields<MutationChangeManyPricesArgs, 'oldPrice' | 'newPrice'>>;
+  changeManyPricesToBalloons?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeManyPricesToBalloonsArgs, 'oldPrice' | 'newPrice'>>;
+  changeManyPricesToBouquets?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeManyPricesToBouquetsArgs, 'oldPrice' | 'newPrice'>>;
   sendOrder?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSendOrderArgs, 'order'>>;
 }>;
 
@@ -889,6 +941,69 @@ export function useAddAssortmentMutation(baseOptions?: Apollo.MutationHookOption
 export type AddAssortmentMutationHookResult = ReturnType<typeof useAddAssortmentMutation>;
 export type AddAssortmentMutationResult = Apollo.MutationResult<AddAssortmentMutation>;
 export type AddAssortmentMutationOptions = Apollo.BaseMutationOptions<AddAssortmentMutation, AddAssortmentMutationVariables>;
+export const AddBalloonDocument = gql`
+    mutation AddBalloon($name: String!, $subname: String!, $price: Int!, $description: String!, $code: Int!, $image: Upload!, $categoryId: ID!, $colorId: ID!) {
+  addBalloon(
+    name: $name
+    subname: $subname
+    price: $price
+    description: $description
+    code: $code
+    image: $image
+    categoryId: $categoryId
+    colorId: $colorId
+  ) {
+    id
+    name
+    subname
+    price
+    description
+    code
+    image
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
+  }
+}
+    `;
+export type AddBalloonMutationFn = Apollo.MutationFunction<AddBalloonMutation, AddBalloonMutationVariables>;
+
+/**
+ * __useAddBalloonMutation__
+ *
+ * To run a mutation, you first call `useAddBalloonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddBalloonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addBalloonMutation, { data, loading, error }] = useAddBalloonMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      subname: // value for 'subname'
+ *      price: // value for 'price'
+ *      description: // value for 'description'
+ *      code: // value for 'code'
+ *      image: // value for 'image'
+ *      categoryId: // value for 'categoryId'
+ *      colorId: // value for 'colorId'
+ *   },
+ * });
+ */
+export function useAddBalloonMutation(baseOptions?: Apollo.MutationHookOptions<AddBalloonMutation, AddBalloonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddBalloonMutation, AddBalloonMutationVariables>(AddBalloonDocument, options);
+      }
+export type AddBalloonMutationHookResult = ReturnType<typeof useAddBalloonMutation>;
+export type AddBalloonMutationResult = Apollo.MutationResult<AddBalloonMutation>;
+export type AddBalloonMutationOptions = Apollo.BaseMutationOptions<AddBalloonMutation, AddBalloonMutationVariables>;
 export const AddBouquetDocument = gql`
     mutation AddBouquet($name: String!, $subname: String!, $price: Int!, $description: String!, $code: Int!, $image: Upload!, $personType: Person!) {
   addBouquet(
@@ -1158,8 +1273,73 @@ export function useChangeAssortmantMutation(baseOptions?: Apollo.MutationHookOpt
 export type ChangeAssortmantMutationHookResult = ReturnType<typeof useChangeAssortmantMutation>;
 export type ChangeAssortmantMutationResult = Apollo.MutationResult<ChangeAssortmantMutation>;
 export type ChangeAssortmantMutationOptions = Apollo.BaseMutationOptions<ChangeAssortmantMutation, ChangeAssortmantMutationVariables>;
+export const ChangeBalloonDocument = gql`
+    mutation ChangeBalloon($id: String!, $name: String, $subname: String, $price: Int, $description: String, $code: Int, $image: Upload, $categoryId: ID, $colorId: ID) {
+  changeBalloon(
+    id: $id
+    name: $name
+    subname: $subname
+    price: $price
+    description: $description
+    code: $code
+    image: $image
+    categoryId: $categoryId
+    colorId: $colorId
+  ) {
+    id
+    name
+    subname
+    price
+    description
+    code
+    image
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
+  }
+}
+    `;
+export type ChangeBalloonMutationFn = Apollo.MutationFunction<ChangeBalloonMutation, ChangeBalloonMutationVariables>;
+
+/**
+ * __useChangeBalloonMutation__
+ *
+ * To run a mutation, you first call `useChangeBalloonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeBalloonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeBalloonMutation, { data, loading, error }] = useChangeBalloonMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      subname: // value for 'subname'
+ *      price: // value for 'price'
+ *      description: // value for 'description'
+ *      code: // value for 'code'
+ *      image: // value for 'image'
+ *      categoryId: // value for 'categoryId'
+ *      colorId: // value for 'colorId'
+ *   },
+ * });
+ */
+export function useChangeBalloonMutation(baseOptions?: Apollo.MutationHookOptions<ChangeBalloonMutation, ChangeBalloonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeBalloonMutation, ChangeBalloonMutationVariables>(ChangeBalloonDocument, options);
+      }
+export type ChangeBalloonMutationHookResult = ReturnType<typeof useChangeBalloonMutation>;
+export type ChangeBalloonMutationResult = Apollo.MutationResult<ChangeBalloonMutation>;
+export type ChangeBalloonMutationOptions = Apollo.BaseMutationOptions<ChangeBalloonMutation, ChangeBalloonMutationVariables>;
 export const ChangeBouquetDocument = gql`
-    mutation ChangeBouquet($id: ID!, $name: String, $subname: String, $price: Int, $description: String, $code: Int, $image: Upload, $personType: Person) {
+    mutation ChangeBouquet($id: String!, $name: String, $subname: String, $price: Int, $description: String, $code: Int, $image: Upload, $personType: Person) {
   changeBouquet(
     id: $id
     name: $name
@@ -1215,7 +1395,7 @@ export type ChangeBouquetMutationHookResult = ReturnType<typeof useChangeBouquet
 export type ChangeBouquetMutationResult = Apollo.MutationResult<ChangeBouquetMutation>;
 export type ChangeBouquetMutationOptions = Apollo.BaseMutationOptions<ChangeBouquetMutation, ChangeBouquetMutationVariables>;
 export const ChangeDeliveryPriceDocument = gql`
-    mutation ChangeDeliveryPrice($id: ID!, $price: String) {
+    mutation ChangeDeliveryPrice($id: ID!, $price: String!) {
   changeDeliveryPrice(id: $id, price: $price) {
     id
     price
@@ -1249,41 +1429,70 @@ export function useChangeDeliveryPriceMutation(baseOptions?: Apollo.MutationHook
 export type ChangeDeliveryPriceMutationHookResult = ReturnType<typeof useChangeDeliveryPriceMutation>;
 export type ChangeDeliveryPriceMutationResult = Apollo.MutationResult<ChangeDeliveryPriceMutation>;
 export type ChangeDeliveryPriceMutationOptions = Apollo.BaseMutationOptions<ChangeDeliveryPriceMutation, ChangeDeliveryPriceMutationVariables>;
-export const ChangeManyPricesDocument = gql`
-    mutation ChangeManyPrices($oldPrice: String!, $newPrice: String!) {
-  changeManyPrices(oldPrice: $oldPrice, newPrice: $newPrice) {
-    id
-    price
-  }
+export const ChangeManyPricesToBalloonsDocument = gql`
+    mutation changeManyPricesToBalloons($oldPrice: Int!, $newPrice: Int!) {
+  changeManyPricesToBalloons(oldPrice: $oldPrice, newPrice: $newPrice)
 }
     `;
-export type ChangeManyPricesMutationFn = Apollo.MutationFunction<ChangeManyPricesMutation, ChangeManyPricesMutationVariables>;
+export type ChangeManyPricesToBalloonsMutationFn = Apollo.MutationFunction<ChangeManyPricesToBalloonsMutation, ChangeManyPricesToBalloonsMutationVariables>;
 
 /**
- * __useChangeManyPricesMutation__
+ * __useChangeManyPricesToBalloonsMutation__
  *
- * To run a mutation, you first call `useChangeManyPricesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useChangeManyPricesMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useChangeManyPricesToBalloonsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeManyPricesToBalloonsMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [changeManyPricesMutation, { data, loading, error }] = useChangeManyPricesMutation({
+ * const [changeManyPricesToBalloonsMutation, { data, loading, error }] = useChangeManyPricesToBalloonsMutation({
  *   variables: {
  *      oldPrice: // value for 'oldPrice'
  *      newPrice: // value for 'newPrice'
  *   },
  * });
  */
-export function useChangeManyPricesMutation(baseOptions?: Apollo.MutationHookOptions<ChangeManyPricesMutation, ChangeManyPricesMutationVariables>) {
+export function useChangeManyPricesToBalloonsMutation(baseOptions?: Apollo.MutationHookOptions<ChangeManyPricesToBalloonsMutation, ChangeManyPricesToBalloonsMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ChangeManyPricesMutation, ChangeManyPricesMutationVariables>(ChangeManyPricesDocument, options);
+        return Apollo.useMutation<ChangeManyPricesToBalloonsMutation, ChangeManyPricesToBalloonsMutationVariables>(ChangeManyPricesToBalloonsDocument, options);
       }
-export type ChangeManyPricesMutationHookResult = ReturnType<typeof useChangeManyPricesMutation>;
-export type ChangeManyPricesMutationResult = Apollo.MutationResult<ChangeManyPricesMutation>;
-export type ChangeManyPricesMutationOptions = Apollo.BaseMutationOptions<ChangeManyPricesMutation, ChangeManyPricesMutationVariables>;
+export type ChangeManyPricesToBalloonsMutationHookResult = ReturnType<typeof useChangeManyPricesToBalloonsMutation>;
+export type ChangeManyPricesToBalloonsMutationResult = Apollo.MutationResult<ChangeManyPricesToBalloonsMutation>;
+export type ChangeManyPricesToBalloonsMutationOptions = Apollo.BaseMutationOptions<ChangeManyPricesToBalloonsMutation, ChangeManyPricesToBalloonsMutationVariables>;
+export const ChangeManyPricesToBouquetsDocument = gql`
+    mutation changeManyPricesToBouquets($oldPrice: Int!, $newPrice: Int!) {
+  changeManyPricesToBouquets(oldPrice: $oldPrice, newPrice: $newPrice)
+}
+    `;
+export type ChangeManyPricesToBouquetsMutationFn = Apollo.MutationFunction<ChangeManyPricesToBouquetsMutation, ChangeManyPricesToBouquetsMutationVariables>;
+
+/**
+ * __useChangeManyPricesToBouquetsMutation__
+ *
+ * To run a mutation, you first call `useChangeManyPricesToBouquetsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeManyPricesToBouquetsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeManyPricesToBouquetsMutation, { data, loading, error }] = useChangeManyPricesToBouquetsMutation({
+ *   variables: {
+ *      oldPrice: // value for 'oldPrice'
+ *      newPrice: // value for 'newPrice'
+ *   },
+ * });
+ */
+export function useChangeManyPricesToBouquetsMutation(baseOptions?: Apollo.MutationHookOptions<ChangeManyPricesToBouquetsMutation, ChangeManyPricesToBouquetsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeManyPricesToBouquetsMutation, ChangeManyPricesToBouquetsMutationVariables>(ChangeManyPricesToBouquetsDocument, options);
+      }
+export type ChangeManyPricesToBouquetsMutationHookResult = ReturnType<typeof useChangeManyPricesToBouquetsMutation>;
+export type ChangeManyPricesToBouquetsMutationResult = Apollo.MutationResult<ChangeManyPricesToBouquetsMutation>;
+export type ChangeManyPricesToBouquetsMutationOptions = Apollo.BaseMutationOptions<ChangeManyPricesToBouquetsMutation, ChangeManyPricesToBouquetsMutationVariables>;
 export const DeleteAssortmantDocument = gql`
     mutation DeleteAssortmant($id: ID!) {
   deleteAssortmant(id: $id) {
@@ -1320,8 +1529,55 @@ export function useDeleteAssortmantMutation(baseOptions?: Apollo.MutationHookOpt
 export type DeleteAssortmantMutationHookResult = ReturnType<typeof useDeleteAssortmantMutation>;
 export type DeleteAssortmantMutationResult = Apollo.MutationResult<DeleteAssortmantMutation>;
 export type DeleteAssortmantMutationOptions = Apollo.BaseMutationOptions<DeleteAssortmantMutation, DeleteAssortmantMutationVariables>;
+export const DeleteBalloonDocument = gql`
+    mutation DeleteBalloon($id: String!) {
+  deleteBalloon(id: $id) {
+    id
+    name
+    subname
+    price
+    description
+    code
+    image
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
+  }
+}
+    `;
+export type DeleteBalloonMutationFn = Apollo.MutationFunction<DeleteBalloonMutation, DeleteBalloonMutationVariables>;
+
+/**
+ * __useDeleteBalloonMutation__
+ *
+ * To run a mutation, you first call `useDeleteBalloonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBalloonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBalloonMutation, { data, loading, error }] = useDeleteBalloonMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteBalloonMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBalloonMutation, DeleteBalloonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBalloonMutation, DeleteBalloonMutationVariables>(DeleteBalloonDocument, options);
+      }
+export type DeleteBalloonMutationHookResult = ReturnType<typeof useDeleteBalloonMutation>;
+export type DeleteBalloonMutationResult = Apollo.MutationResult<DeleteBalloonMutation>;
+export type DeleteBalloonMutationOptions = Apollo.BaseMutationOptions<DeleteBalloonMutation, DeleteBalloonMutationVariables>;
 export const DeleteBouquetDocument = gql`
-    mutation DeleteBouquet($id: ID!) {
+    mutation DeleteBouquet($id: String!) {
   deleteBouquet(id: $id) {
     id
     name
@@ -1644,7 +1900,7 @@ export type AssortmentQueryHookResult = ReturnType<typeof useAssortmentQuery>;
 export type AssortmentLazyQueryHookResult = ReturnType<typeof useAssortmentLazyQuery>;
 export type AssortmentQueryResult = Apollo.QueryResult<AssortmentQuery, AssortmentQueryVariables>;
 export const BalloonDocument = gql`
-    query Balloon($id: ID!) {
+    query Balloon($id: String!) {
   balloon(id: $id) {
     id
     name
@@ -1762,7 +2018,7 @@ export type BalloonsQueryHookResult = ReturnType<typeof useBalloonsQuery>;
 export type BalloonsLazyQueryHookResult = ReturnType<typeof useBalloonsLazyQuery>;
 export type BalloonsQueryResult = Apollo.QueryResult<BalloonsQuery, BalloonsQueryVariables>;
 export const BouquetDocument = gql`
-    query Bouquet($id: ID!) {
+    query Bouquet($id: String!) {
   bouquet(id: $id) {
     id
     name

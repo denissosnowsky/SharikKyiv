@@ -72,6 +72,7 @@ const PaginationFC: React.FC<PaginationType> = ({
               setPage(p);
             }}
             active={p === active}
+            activeLabel=''
           >
             {p}
           </Pagination.Item>

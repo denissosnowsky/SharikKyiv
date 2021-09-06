@@ -30,14 +30,14 @@ const ListWithCounterAndPhoto: React.FC<ListWithCounterAndPhotoProps> = ({
 
   useMemo(() => setSum(sumOfObjectValues(counters)), [counters]);
 
-  const handleCounterPrice = (id: number, initValue: number) => {
+  const handleCounterPrice = (id: string, initValue: number) => {
     return (value: number) => {
       setCounters(counterStateChanger(counters, id, value, initValue));
       changeQuantInBasket && changeQuantInBasket(id, value);
     };
   };
 
-  const handleDeleteItem = (id: number, initValue: number) => {
+  const handleDeleteItem = (id: string, initValue: number) => {
     setCounters(counterStateChanger(counters, id, 0, initValue));
     deleteFromBasket && deleteFromBasket(id);
   };

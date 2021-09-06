@@ -78,7 +78,7 @@ export function getApolloClient(forceNew?: boolean) {
       read(_, { readField }: { readField: ReadFieldFunction }) {
         const orders = basketVar();
         const foundInBasket = orders.filter(
-          (obj) => obj.code === readField("code")
+          (obj) => obj.id === readField("id")
         )[0];
         if (foundInBasket) {
           return {

@@ -36,6 +36,7 @@ const BouqItem: () => void | JSX.Element = () => {
             img={balloon!.image}
             price={balloon!.price}
             measure={"грн."}
+            id={balloon!.id}
             basketStatus={balloon!.basketStatus!}
           />
         )}

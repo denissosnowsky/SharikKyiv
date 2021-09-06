@@ -1,5 +1,5 @@
 mutation ChangeBalloon(
-  $id: ID!
+  $id: String!
   $name: String
   $subname: String
   $price: Int
@@ -27,7 +27,13 @@ mutation ChangeBalloon(
     description
     code
     image
-    category: {id}
-    color: {id}
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
   }
 }

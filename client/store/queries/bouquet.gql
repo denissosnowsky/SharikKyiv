@@ -1,4 +1,4 @@
-query Bouquet($id: ID!) {
+query Bouquet($id: String!) {
   bouquet(id: $id) {
     id
     name

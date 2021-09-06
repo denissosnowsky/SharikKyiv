@@ -19,6 +19,7 @@ interface ProductProps {
   price: number;
   measure: string;
   basketStatus: BasketStatusType;
+  id: string;
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -30,10 +31,11 @@ const Product: React.FC<ProductProps> = ({
   price,
   measure,
   basketStatus,
+  id
 }) => {
   const [count, setCount] = useState<number>(1);
 
-  const handleDeleteItem = (id: number) => {
+  const handleDeleteItem = (id: string) => {
     deleteFromBasket && deleteFromBasket(id);
   };
 
@@ -45,6 +47,7 @@ const Product: React.FC<ProductProps> = ({
       code,
       description: desc,
       image: `${googleUrl}${img}`,
+      id
     });
   };
 
@@ -82,7 +85,7 @@ const Product: React.FC<ProductProps> = ({
             <Button
               variant="success"
               className={cs([s.button], "m-1")}
-              onClick={() => handleDeleteItem(code)}
+              onClick={() => handleDeleteItem(id)}
             >
               Удалить
             </Button>

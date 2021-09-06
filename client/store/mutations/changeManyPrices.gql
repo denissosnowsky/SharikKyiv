@@ -1,6 +1,0 @@
-mutation ChangeManyPrices($oldPrice: String!, $newPrice: String!) {
-  changeManyPrices(oldPrice: $oldPrice, newPrice: $newPrice) {
-    id
-    price
-  }
-}

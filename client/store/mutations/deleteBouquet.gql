@@ -1,4 +1,4 @@
-mutation DeleteBouquet($id: ID!){
+mutation DeleteBouquet($id: String!){
   deleteBouquet(id: $id) {
     id
     name

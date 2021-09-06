@@ -1,4 +1,4 @@
-mutation DeleteBalloon($id: ID!) {
+mutation DeleteBalloon($id: String!) {
   deleteBalloon(id: $id) {
     id
     name
@@ -7,7 +7,13 @@ mutation DeleteBalloon($id: ID!) {
     description
     code
     image
-    category: {id}
-    color: {id}
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
   }
 }

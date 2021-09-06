@@ -38,6 +38,7 @@ console.log(data?.bouquet);
             img={bouquet!.image}
             price={bouquet!.price}
             measure={"грн."}
+            id={bouquet!.id}
             basketStatus={bouquet!.basketStatus!}
           />
         )}

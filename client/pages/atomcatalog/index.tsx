@@ -6,7 +6,7 @@ import NavBar from "../../components/Layouts/Navbar/Navbar";
 import CardComponent from "../../components/Card/CardComponent";
 import DropdownBtn from "../../components/DropdownBtn/DropdownBtn";
 import DropdownBtnWithColor from "../../components/DropdownBtnWithColor/DropdownBtnWithColor";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import RangeInput from "../../components/RangeInput/RangeInput";
 import {
   useAllBalloonsQuery,
@@ -41,7 +41,7 @@ const AtomCatalog: ({
   colorQuery,
   pageQuery,
 }) => {
-  const TAKE = 3;
+  const TAKE = 15;
   const PRICE_STEP = 50;
 
   const params =
@@ -61,8 +61,6 @@ const AtomCatalog: ({
   const [color, setColor] = useState<string | undefined>(
     colorQuery ? colorQuery : undefined
   );
-  const [catName, setCatName] = useState<string>("Выбрать категорию | Все");
-  const [colName, setColName] = useState<string>("Выбрать цвет | Все");
 
   useSynchronizeUrl(params!, [
     { value: page, queryName: "page" },
@@ -123,19 +121,17 @@ const AtomCatalog: ({
     ssr: false,
   });
 
-  useEffect(() => {
-    const newState = category
+  const categoryInitName = useMemo(() => {
+    return dataCategory?.categories?.find((o) => o?.id === category)?.name
       ? dataCategory?.categories?.find((o) => o?.id === category)?.name
       : "Выбрать категорию | Все";
-    setCatName(newState!);
-  }, [category]);
+  }, []);
 
-  useEffect(() => {
-    const newState = color
+  const colorInitName = useMemo(() => {
+    return dataColor?.colors?.find((o) => o?.id === color)?.name
       ? dataColor?.colors?.find((o) => o?.id === color)?.name
       : "Выбрать цвет | Все";
-    setColName(newState!);
-  }, [color]);
+  }, []);
 
   useEffect(() => {
     fetchMore({
@@ -167,7 +163,13 @@ const AtomCatalog: ({
     []
   );
 
-  if (errorBalloons || errorCount || errorCategory || errorColor) {
+  if (
+    errorBalloons ||
+    errorCount ||
+    errorCategory ||
+    errorColor ||
+    errorMaxPrice
+  ) {
     console.log(
       errorBalloons
         ? errorBalloons
@@ -192,13 +194,7 @@ const AtomCatalog: ({
   return (
     <NavBar title="Отдельные шары">
       <ContentLayout>
-        {loadingBalloons ||
-        loadingCount ||
-        loadingCategory ||
-        loadingColor ||
-        loadingMaxPrice ||
-        networkStatusBalloons === NetworkStatus.refetch ||
-        networkStatusCount === NetworkStatus.refetch ? (
+        {loadingCategory || loadingColor || loadingMaxPrice ? (
           <Loading />
         ) : (
           <>
@@ -208,7 +204,7 @@ const AtomCatalog: ({
                 xs={4}
               >
                 <DropdownBtn
-                  title={catName}
+                  title={categoryInitName!}
                   items={dataCategory?.categories!}
                   externalClb={handleFilter("CATEGORY")}
                 />
@@ -231,39 +227,52 @@ const AtomCatalog: ({
                 xs={4}
               >
                 <DropdownBtnWithColor
-                  title={colName}
+                  title={colorInitName!}
                   items={dataColor?.colors!}
                   externalClb={handleFilter("COLOR")}
                 />
               </Col>
             </Row>
-            <Row>
-              {dataBalloons?.balloons && dataBalloons?.balloons?.length > 0 ? (
-                dataBalloons?.balloons?.map((item) => (
-                  <CardComponent
-                    key={item?.id}
-                    name={item?.name!}
-                    subName={item?.subname!}
-                    price={item?.price!}
-                    code={item?.code!}
-                    id={item?.id!}
-                    photo={item?.image!}
-                    measure={"грн."}
-                    link={router.pathname}
-                    description={item?.description!}
-                    basketStatus={item?.basketStatus!}
-                  />
-                ))
-              ) : (
-                <div className={s.emptyData}>Таких шаров нету</div>
-              )}
-            </Row>
-            <PaginationFC
-              page={page}
-              setPage={setPage}
-              pageSize={TAKE}
-              allCount={dataCount?.allBalloons!}
-            />
+            {loadingBalloons ||
+            loadingCount ||
+            loadingCategory ||
+            loadingColor ||
+            loadingMaxPrice ||
+            networkStatusBalloons === NetworkStatus.refetch ||
+            networkStatusCount === NetworkStatus.refetch ? (
+              <Loading />
+            ) : (
+              <>
+                <Row>
+                  {dataBalloons?.balloons &&
+                  dataBalloons?.balloons?.length > 0 ? (
+                    dataBalloons?.balloons?.map((item) => (
+                      <CardComponent
+                        key={item?.id}
+                        name={item?.name!}
+                        subName={item?.subname!}
+                        price={item?.price!}
+                        code={item?.code!}
+                        id={item?.id!}
+                        photo={item?.image!}
+                        measure={"грн."}
+                        link={router.pathname}
+                        description={item?.description!}
+                        basketStatus={item?.basketStatus!}
+                      />
+                    ))
+                  ) : (
+                    <div className={s.emptyData}>Таких шаров нету</div>
+                  )}
+                </Row>
+                <PaginationFC
+                  page={page}
+                  setPage={setPage}
+                  pageSize={TAKE}
+                  allCount={dataCount?.allBalloons!}
+                />
+              </>
+            )}
           </>
         )}
       </ContentLayout>

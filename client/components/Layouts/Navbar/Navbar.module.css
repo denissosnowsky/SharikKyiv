@@ -1,5 +1,5 @@
 .navbar {
-  height: 82vh;
+  height: 85vh;
   margin-left: 1rem;
 }
 
@@ -20,7 +20,7 @@
 
 .main {
   overflow-y: auto;
-  height: 81vh;
+  height: 84vh;
 }
 
 .mainWrapper{
@@ -31,14 +31,14 @@
 }
 
 .headerRow {
-  height: 18vh;
+  height: 15vh;
   width: 100vw;
   margin: 0px;
 }
 
 .mainRow {
   width: 100vw;
-  height: 82vh;
+  height: 85vh;
   margin: 0px;
 }
 

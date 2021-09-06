@@ -1,6 +1,6 @@
 export const counterStateChanger = (
   counters: Record<string, number>,
-  id: number,
+  id: string,
   value: number,
   initValue: number
 ) => {

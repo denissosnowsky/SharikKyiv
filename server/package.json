@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --no-notify api/server.ts",
-    "migrate": "prisma migrate dev"
+    "migrate": "npx prisma migrate dev"
   },
   "type": "module",
   "devDependencies": {

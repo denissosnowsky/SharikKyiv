@@ -24,9 +24,9 @@ export const RootQuery = new GraphQLObjectType({
   fields: {
     bouquet: {
       type: BouquetType,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      args: { id: { type: new GraphQLNonNull(GraphQLString) } },
       resolve(_parent, { id }, ctx: ApolloServerContext) {
-        return ctx.prisma.bouquet.findUnique({ where: { id: +id } });
+        return ctx.prisma.bouquet.findUnique({ where: { id: id } });
       },
     },
     bouquets: {
@@ -55,9 +55,9 @@ export const RootQuery = new GraphQLObjectType({
     },
     balloon: {
       type: BalloonType,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      args: { id: { type: new GraphQLNonNull(GraphQLString) } },
       resolve(_parent, { id }, ctx: ApolloServerContext) {
-        return ctx.prisma.balloon.findUnique({ where: { id: +id } });
+        return ctx.prisma.balloon.findUnique({ where: { id: id } });
       },
     },
     balloons: {
@@ -105,7 +105,11 @@ export const RootQuery = new GraphQLObjectType({
     assortment: {
       type: new GraphQLList(AssortmentType),
       resolve(_parent, _args, ctx: ApolloServerContext) {
-        return ctx.prisma.assortment.findMany();
+        return ctx.prisma.assortment.findMany(
+          {orderBy: {
+            createdAt: "asc",
+          }}
+        );
       },
     },
     phones: {

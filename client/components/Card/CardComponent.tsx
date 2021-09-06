@@ -43,7 +43,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
     setCount(count);
   };
 
-  const handleDeleteItem = (id: number) => {
+  const handleDeleteItem = (id: string) => {
     deleteFromBasket && deleteFromBasket(id);
   };
 
@@ -55,6 +55,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
       code,
       description,
       image: `${googleUrl}${photo}`,
+      id
     });
   };
 
@@ -86,7 +87,7 @@ const CardComponent: React.FC<CardComponentProps> = ({
             <Button
               variant="success"
               className={cs([s.button], "w-50", "btn-sm", "m-1")}
-              onClick={()=>handleDeleteItem(code)}
+              onClick={()=>handleDeleteItem(id)}
             >
               Удалить
             </Button>

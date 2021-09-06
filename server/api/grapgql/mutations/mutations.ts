@@ -69,7 +69,7 @@ export const Mutation = new GraphQLObjectType({
     changeBouquet: {
       type: BouquetType,
       args: {
-        id: { type: new GraphQLNonNull(GraphQLID) },
+        id: { type: new GraphQLNonNull(GraphQLString) },
         name: { type: GraphQLString },
         subname: { type: GraphQLString },
         price: { type: GraphQLInt },
@@ -99,7 +99,7 @@ export const Mutation = new GraphQLObjectType({
           const oldImage = await ctx.prisma.bouquet
             .findUnique({
               where: {
-                id: +args.id,
+                id: args.id,
               },
             })
             .then((b) => b?.image);
@@ -113,7 +113,7 @@ export const Mutation = new GraphQLObjectType({
 
         const bouquet = await ctx.prisma.bouquet.update({
           where: {
-            id: +args.id,
+            id: args.id,
           },
           data: {
             name: args.name,
@@ -130,12 +130,12 @@ export const Mutation = new GraphQLObjectType({
     },
     deleteBouquet: {
       type: BouquetType,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      args: { id: { type: new GraphQLNonNull(GraphQLString) } },
       async resolve(_parent, { id }, ctx: ApolloServerContext) {
         const imageName = await ctx.prisma.bouquet
           .findUnique({
             where: {
-              id: +id,
+              id: id,
             },
           })
           .then((b) => b?.image);
@@ -144,7 +144,7 @@ export const Mutation = new GraphQLObjectType({
           ctx.googleBucket.file(imageName) &&
           (await ctx.googleBucket.file(imageName).delete());
 
-        const bouquet = await ctx.prisma.bouquet.delete({ where: { id: +id } });
+        const bouquet = await ctx.prisma.bouquet.delete({ where: { id: id } });
         return bouquet;
       },
     },
@@ -156,7 +156,7 @@ export const Mutation = new GraphQLObjectType({
         price: { type: new GraphQLNonNull(GraphQLInt) },
         description: { type: new GraphQLNonNull(GraphQLString) },
         code: { type: new GraphQLNonNull(GraphQLInt) },
-        image: { type: new GraphQLNonNull(GraphQLUpload) }, //add file photo
+        image: { type: new GraphQLNonNull(GraphQLUpload) },
         categoryId: { type: new GraphQLNonNull(GraphQLID) },
         colorId: { type: new GraphQLNonNull(GraphQLID) },
       },
@@ -193,7 +193,7 @@ export const Mutation = new GraphQLObjectType({
     changeBalloon: {
       type: BalloonType,
       args: {
-        id: { type: new GraphQLNonNull(GraphQLID) },
+        id: { type: new GraphQLNonNull(GraphQLString) },
         name: { type: GraphQLString },
         subname: { type: GraphQLString },
         price: { type: GraphQLInt },
@@ -205,7 +205,6 @@ export const Mutation = new GraphQLObjectType({
       },
       async resolve(_parent, args, ctx: ApolloServerContext) {
         let imageName: string | undefined;
-
         if (args.image) {
           const { filename, createReadStream } = await args.image;
           imageName = uuidv4() + filename;
@@ -224,7 +223,7 @@ export const Mutation = new GraphQLObjectType({
           const oldImage = await ctx.prisma.balloon
             .findUnique({
               where: {
-                id: +args.id,
+                id: args.id,
               },
             })
             .then((b) => b?.image);
@@ -235,9 +234,8 @@ export const Mutation = new GraphQLObjectType({
         } else {
           imageName = undefined;
         }
-
         const balloon = await ctx.prisma.balloon.update({
-          where: { id: +args.id },
+          where: { id: args.id },
           data: {
             name: args.name,
             subname: args.subname,
@@ -254,12 +252,12 @@ export const Mutation = new GraphQLObjectType({
     },
     deleteBalloon: {
       type: BalloonType,
-      args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+      args: { id: { type: new GraphQLNonNull(GraphQLString) } },
       async resolve(_parent, { id }, ctx: ApolloServerContext) {
         const imageName = await ctx.prisma.balloon
           .findUnique({
             where: {
-              id: +id,
+              id: id,
             },
           })
           .then((b) => b?.image);
@@ -268,7 +266,7 @@ export const Mutation = new GraphQLObjectType({
           ctx.googleBucket.file(imageName) &&
           (await ctx.googleBucket.file(imageName).delete());
 
-        const balloon = await ctx.prisma.balloon.delete({ where: { id: +id } });
+        const balloon = await ctx.prisma.balloon.delete({ where: { id: id } });
         return balloon;
       },
     },
@@ -471,22 +469,48 @@ export const Mutation = new GraphQLObjectType({
         return socialNet;
       },
     },
-    changeManyPrices: {
-      type: BalloonType,
+    changeManyPricesToBalloons: {
+      type: GraphQLBoolean,
       args: {
-        oldPrice: { type: new GraphQLNonNull(GraphQLString) },
-        newPrice: { type: new GraphQLNonNull(GraphQLString) },
+        oldPrice: { type: new GraphQLNonNull(GraphQLInt) },
+        newPrice: { type: new GraphQLNonNull(GraphQLInt) },
       },
       async resolve(_parent, { oldPrice, newPrice }, ctx: ApolloServerContext) {
-        const balloons = await ctx.prisma.balloon.updateMany({
-          where: {
-            price: oldPrice,
-          },
-          data: {
-            price: newPrice,
-          },
-        });
-        return balloons;
+        try {
+          const balloons = await ctx.prisma.balloon.updateMany({
+            where: {
+              price: oldPrice,
+            },
+            data: {
+              price: newPrice,
+            },
+          });
+          return true;
+        } catch {
+          return false;
+        }
+      },
+    },
+    changeManyPricesToBouquets: {
+      type: GraphQLBoolean,
+      args: {
+        oldPrice: { type: new GraphQLNonNull(GraphQLInt) },
+        newPrice: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      async resolve(_parent, { oldPrice, newPrice }, ctx: ApolloServerContext) {
+        try {
+          const bouquets = await ctx.prisma.bouquet.updateMany({
+            where: {
+              price: oldPrice,
+            },
+            data: {
+              price: newPrice,
+            },
+          });
+          return true;
+        } catch {
+          return false;
+        }
       },
     },
     sendOrder: {

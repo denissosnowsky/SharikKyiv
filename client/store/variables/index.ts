@@ -7,6 +7,7 @@ export interface OrderType {
   code: number;
   description: string;
   image: string;
+  id: string;
 }
 
 export type BasketVarType = Array<OrderType>;

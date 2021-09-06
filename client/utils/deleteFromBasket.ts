@@ -1,7 +1,7 @@
 import { basketVar } from "../store/variables";
 
-export const deleteFromBasket = (code: number) => {
+export const deleteFromBasket = (id: string) => {
     const orders = basketVar();
-    const filteredOrders = orders.filter(obj => obj.code != code);
+    const filteredOrders = orders.filter(obj => obj.id != id);
     basketVar(filteredOrders);
 }

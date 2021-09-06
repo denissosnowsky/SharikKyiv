@@ -31,7 +31,7 @@ const BouqCatalog: ({
   priceQuery,
   pageQuery,
 }) => {
-  const TAKE = 12;
+  const TAKE = 15;
   const PRICE_STEP = 50;
 
   const params =

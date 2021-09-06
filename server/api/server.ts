@@ -47,7 +47,7 @@ async function start() {
     const corsOptions = {
       origin: whitelist
     };
-    app.use(cors(corsOptions));
+    /* app.use(cors(corsOptions)); */
 
     await server.start();
 

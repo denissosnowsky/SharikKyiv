@@ -1,4 +1,4 @@
-query Balloon($id: ID!) {
+query Balloon($id: String!) {
   balloon(id: $id) {
     id
     name

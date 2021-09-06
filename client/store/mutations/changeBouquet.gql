@@ -1,5 +1,5 @@
 mutation ChangeBouquet(
-  $id: ID!
+  $id: String!
   $name: String
   $subname: String
   $price: Int

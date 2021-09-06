@@ -15,7 +15,7 @@ import { ApolloServerContext } from "../../types/ApolloServerContext";
 export const BouquetType: GraphQLObjectType = new GraphQLObjectType({
   name: "Bouquet",
   fields: () => ({
-    id: { type: new GraphQLNonNull (GraphQLID) },
+    id: { type: new GraphQLNonNull (GraphQLString) },
     createdAt: { type: new GraphQLNonNull (GraphQLDateTime) },
     updatedAt: { type: new GraphQLNonNull (GraphQLDateTime) },
     name: { type: new GraphQLNonNull (GraphQLString) },
@@ -40,7 +40,7 @@ export const PersonType: GraphQLEnumType = new GraphQLEnumType({
 export const BalloonType: GraphQLObjectType = new GraphQLObjectType({
   name: "Balloon",
   fields: () => ({
-    id: { type: new GraphQLNonNull (GraphQLID) },
+    id: { type: new GraphQLNonNull (GraphQLString) },
     createdAt: { type: new GraphQLNonNull (GraphQLDateTime) },
     updatedAt: { type: new GraphQLNonNull (GraphQLDateTime) },
     name: { type: new GraphQLNonNull (GraphQLString) },

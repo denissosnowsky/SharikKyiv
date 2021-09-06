@@ -25,7 +25,13 @@ mutation AddBalloon(
     description
     code
     image
-    category: {id}
-    color: {id}
+    category {
+      id
+      name
+    }
+    color {
+      id
+      name
+    }
   }
 }

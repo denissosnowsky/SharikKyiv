@@ -8,10 +8,11 @@ export const basketArrConvertor = (db: BasketVarType) => {
       arr[i] = {
         leftText: db[i].name,
         rightText: db[i].price,
-        id: db[i].code,
+        code: db[i].code,
         image: db[i].image,
         description: db[i].description,
         quantity: db[i].quantity,
+        id: db[i].id
       };
     }
   }

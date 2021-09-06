@@ -57,8 +57,8 @@ const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
           className="d-flex flex-column align-items-end justify-content-center"
         >
           <div className="me-5">
-            {dataPhone?.phones?.map((item) => (
-              <PhoneBlock
+            {dataPhone?.phones?.map((item, i) => (
+              i===0 && <PhoneBlock
                 fontSize="20px"
                 number={item!.number}
                 key={item?.id}
