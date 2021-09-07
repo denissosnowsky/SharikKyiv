@@ -1,5 +1,7 @@
 import { Maybe } from "graphql/jsutils/Maybe";
 import { memo, useEffect, useState } from "react";
+import s from './Counter.module.css';
+import cs from 'classnames';
 
 interface CounterProps {
   minValue: number;
@@ -25,7 +27,7 @@ const Counter: React.FC<CounterProps> = ({ clb, minValue, start }) => {
   };
 
   return (
-    <div className="counter w-50 d-flex justify-content-center">
+    <div className={cs([s.wrapper], "counter", "w-50", "d-flex", "justify-content-center")}>
       <i className="bi bi-dash px-2" onClick={handleMinus}></i>
       <span>{count}</span>
       <i className="bi bi-plus px-2" onClick={handlePlus}></i>

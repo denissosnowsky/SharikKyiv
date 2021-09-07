@@ -50,3 +50,36 @@
 .bin:hover {
   color: red;
 }
+
+@media (max-width: 1200px){
+
+}
+
+@media (max-width: 992px){
+
+}
+
+@media (max-width: 768px){
+
+}
+
+@media (max-width: 576px){
+  .li{
+    font-size: 15px;
+  }
+  .input {
+    font-size: 15px;
+  }
+  .lastCol{
+    font-size: 15px;
+  }
+  .title{
+    font-size: 15px;
+  }
+  .image,
+.imageWrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+}
+}

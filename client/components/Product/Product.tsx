@@ -57,12 +57,12 @@ const Product: React.FC<ProductProps> = ({
 
   return (
     <Row>
-      <Col className={cs([s.imageCol], "d-flex", "justify-content-center")}>
-        <div style={{ height: "100%", width: "370px" }}>
+      <Col className={cs([s.imageCol], "d-flex", "justify-content-center")} lg={6} md={6} sm={6}>
+        <div className={s.imgWrapper}>
           <img src={`${googleUrl}${img}`} className={s.image} />
         </div>
       </Col>
-      <Col className="d-flex flex-column">
+      <Col className="d-flex flex-column" lg={6} md={6} sm={6}>
         <div className={s.title}>{title}</div>
         <div className={s.subTitle}>{subTitle}</div>
         <div className={s.price}>

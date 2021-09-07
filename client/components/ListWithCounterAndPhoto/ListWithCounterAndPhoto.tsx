@@ -47,25 +47,25 @@ const ListWithCounterAndPhoto: React.FC<ListWithCounterAndPhotoProps> = ({
       {data.map((i) => (
         <ListGroup.Item className={s.li} key={i.id}>
           <Row className={s.upRow}>
-            <Col xs={2}>
+            <Col xs={3} md={2}>
               <div className={s.imageWrapper}>
                 <img src={i.image} className={s.image} />
               </div>
             </Col>
-            <Col xs={4} className={s.title}>
+            <Col xs={4} md={4} className={s.title}>
               {i.leftText}
             </Col>
-            <Col xs={3}>
+            <Col xs={2} md={3}>
               <Counter
                 clb={handleCounterPrice(i.id, Number(i.rightText))}
                 minValue={1}
                 start={i.quantity}
               />
             </Col>
-            <Col xs={2} className={s.lastCol}>
+            <Col xs={2} md={2} className={s.lastCol}>
               {counters[i.id]} {measure}
             </Col>
-            <Col xs={1}>
+            <Col xs={1} md={1}>
               <i
                 className={cs([s.bin], "bi", "bi-trash-fill")}
                 onClick={() => handleDeleteItem(i.id, Number(i.rightText))}

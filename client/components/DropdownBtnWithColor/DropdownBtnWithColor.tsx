@@ -39,7 +39,7 @@ const DropdownBtnWithColor: React.FC<DropdownBtnWithColorProps> = ({
         {"Все"}
       </Dropdown.Item>
       {items &&
-        items.length > 0 &&
+        (items.length > 0 &&
         items.map((item) => (
           <Dropdown.Item key={item?.id} onClick={()=>handleItemBtn(item?.id!, item?.name!)}>
             <div
@@ -48,7 +48,7 @@ const DropdownBtnWithColor: React.FC<DropdownBtnWithColorProps> = ({
             ></div>
             {item?.name}
           </Dropdown.Item>
-        ))}
+        )))}
     </DropdownButton>
   );
 };

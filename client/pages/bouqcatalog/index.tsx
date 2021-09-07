@@ -138,11 +138,13 @@ const BouqCatalog: ({
             <Row style={{ height: "60px" }}>
               <Col
                 className="d-flex justify-content-center align-items-center"
-                xs={4}
+                lg={4}
+                xs={12}
               ></Col>
               <Col
                 className="d-flex justify-content-center align-items-center"
-                xs={4}
+                lg={4}
+                xs={12}
               >
                 <RangeInput
                   title="Макс. цена"
@@ -155,11 +157,12 @@ const BouqCatalog: ({
               </Col>
               <Col
                 className="d-flex justify-content-center align-items-center"
-                xs={4}
+                lg={4}
+                xs={12}
               ></Col>
             </Row>
             <Row>
-              {dataBouquets?.bouquets && dataBouquets?.bouquets?.length > 0 ? (
+              {dataBouquets?.bouquets && (dataBouquets?.bouquets?.length > 0 ? (
                 dataBouquets?.bouquets?.map((item) => (
                   <CardComponent
                     key={item?.id}
@@ -177,7 +180,7 @@ const BouqCatalog: ({
                 ))
               ) : (
                 <div className={s.emptyData}>Таких шаров нету</div>
-              )}
+              ))}
             </Row>
             <PaginationFC
               page={page}

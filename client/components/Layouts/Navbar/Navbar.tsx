@@ -1,11 +1,8 @@
-import Nav from "react-bootstrap/Nav";
 import cs from "classnames";
 import s from "./Navbar.module.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "next/image";
-import Link from "next/link";
-import Badge from "react-bootstrap/Badge";
 import Head from "next/head";
 import PhoneBlock from "../../PhoneBlock/PhoneBlock";
 import SocialNetBlock from "../../SocialNetBlock/SocialNetBlock";
@@ -13,17 +10,16 @@ import {
   usePhonesQuery,
   useSocialNetsQuery,
 } from "../../../store/generated/graphql";
-import { useGetBasketValues } from "../../../hooks/useGetBasketValues";
-import { memo, ReactNode} from "react";
+import { memo, ReactNode, useState } from "react";
 import { showError } from "../../../utils/showError";
+import NavC from "../../NavC/NavC";
 
 interface NavBarProps {
   title: string;
 }
 
 const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
-
-  const basket = useGetBasketValues(); 
+  const [pushMobileMenu, setPushMobileMenu] = useState(false);
 
   const {
     loading: loadingPhone,
@@ -48,22 +44,38 @@ const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
       <Head>
         <title>{title} | SharikKyiv</title>
       </Head>
+      <div>
+      <div className={cs([s.black, pushMobileMenu && s.showBlack])}></div>
       <Row className={cs([s.headerRow])}>
-        <Col style={{ position: "relative" }} xs={{ span: 4, offset: 4 }}>
+        <Col xs={3} md={4} className={s.mobileMenuCol}>
+          <div className={cs([s.mobileMenu])} onClick={()=>setPushMobileMenu(!pushMobileMenu)}>
+            {pushMobileMenu ?
+              <img src='/cross.png'></img>
+              :
+              <img src='/burger.png'></img>
+            }
+            
+          </div>
+        </Col>
+        <Col style={{ position: "relative" }} xs={{ span: 4 }} md={4}>
           <Image src="/logo.svg" alt="Logo" layout="fill" className={s.logo} />
         </Col>
         <Col
-          xs={4}
+          xs={5}
+          md={4}
           className="d-flex flex-column align-items-end justify-content-center"
         >
-          <div className="me-5">
-            {dataPhone?.phones?.map((item, i) => (
-              i===0 && <PhoneBlock
-                fontSize="20px"
-                number={item!.number}
-                key={item?.id}
-              />
-            ))}
+          <div className={s.phoneBlock}>
+            {dataPhone?.phones?.map(
+              (item, i) =>
+                i === 0 && (
+                  <PhoneBlock
+                    fontSize="20px"
+                    number={item!.number}
+                    key={item?.id}
+                  />
+                )
+            )}
             <div className="d-flex justify-content-center">
               {dataSocial?.socialNets?.map((item) => (
                 <SocialNetBlock
@@ -80,54 +92,21 @@ const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
         </Col>
       </Row>
       <Row className={s.mainRow}>
-        <Col xs={3} className={s.col}>
+        <Col xs={0} sm={0} md={3} className={cs([s.col])}>
           <nav className={s.navbar}>
-            <Nav className={cs([s.bootNav], "flex-column")}>
-              <Link href="/bouqcatalog">
-                <a>
-                  <i className="bi bi-book"></i>Готовые букеты шаров
-                </a>
-              </Link>
-              <Link href="/atomcatalog">
-                <a>
-                  <i className="bi bi-layers"></i>Собрать букет самому
-                </a>
-              </Link>
-              <Link href="/price">
-                <a>
-                  <i className="bi bi-tag"></i>Цены на шарики
-                </a>
-              </Link>
-              <Link href="/calculator">
-                <a>
-                  <i className="bi bi-calculator"></i>Калькулятор цен
-                </a>
-              </Link>
-              <Link href="/delivery">
-                <a>
-                  <i className="bi bi-truck"></i>Доставка и оплата
-                </a>
-              </Link>
-              <Link href="/contacts">
-                <a>
-                  <i className="bi bi-telephone"></i>Контакты
-                </a>
-              </Link>
-              <Link href="/basket">
-                <a>
-                  <i className="bi bi-cart2"></i>Корзина{" "}
-                  <Badge bg="danger">{basket.length}</Badge>
-                </a>
-              </Link>
-            </Nav>
+            <NavC/>
           </nav>
         </Col>
-        <Col xs={9} className={s.col}>
+        <Col xs={12} sm={12} md={9} className={s.col}>
           <div className={s.mainWrapper}>
+          <div className={cs([s.rollMenu, pushMobileMenu && s.rollMenuShow])}>
+          <NavC clb={setPushMobileMenu}/>
+        </div>
             <main className={s.main}>{children}</main>
           </div>
         </Col>
       </Row>
+      </div>
     </>
   );
 });

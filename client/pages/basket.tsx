@@ -89,7 +89,7 @@ const Basket: NextPage = () => {
           <Loading />
         ) : (
           <>
-            {convertedBasket.length > 0 ? (
+            {convertedBasket && (convertedBasket.length > 0 ? (
               <>
                 <ListWithCounterAndPhoto
                   measure={"грн."}
@@ -188,7 +188,7 @@ const Basket: NextPage = () => {
               </>
             ) : (
               <div className={s.emptyBaskettext}>Корзина пустая</div>
-            )}
+            ))}
           </>
         )}
       </ContentLayout>

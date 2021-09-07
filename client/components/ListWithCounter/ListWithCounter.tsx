@@ -44,7 +44,7 @@ const ListWithCounter: React.FC<ListWithCounterProps> = ({ data, measure }) => {
 
   return (
     <ListGroup variant="flush" style={{ padding: "10px" }}>
-      {data.length > 0 &&
+      {data && (data.length > 0 &&
         data.map((i) => (
           <ListGroup.Item
             className={s.li}
@@ -52,8 +52,8 @@ const ListWithCounter: React.FC<ListWithCounterProps> = ({ data, measure }) => {
             style={{ padding: "0px" }}
           >
             <Row>
-              <Col xs={6}>{i.leftText}</Col>
-              <Col xs={4}>
+              <Col xs={6} md={6}>{i.leftText}</Col>
+              <Col xs={3} md={4}>
                 {i.fixed ? (
                   <Counter
                     clb={handleCounterPrice(i.id, Number(i.rightText))}
@@ -69,12 +69,12 @@ const ListWithCounter: React.FC<ListWithCounterProps> = ({ data, measure }) => {
                   />
                 )}
               </Col>
-              <Col xs={2} className={s.lastCol}>
+              <Col xs={3} md={2} className={s.lastCol}>
                 {counters[i.id!]} {measure}
               </Col>
             </Row>
           </ListGroup.Item>
-        ))}
+        )))}
       <ListGroup.Item className={s.li}>
         <Row className={s.sumRow}>
           <Col xs={6}>ВСЕГО: </Col>

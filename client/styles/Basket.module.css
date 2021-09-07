@@ -33,3 +33,16 @@
   color: #dc3545;
   font-weight: 400;
 }
+
+@media (max-width: 768px){
+  .form {
+    width: 80%;
+  }
+}
+
+
+@media (max-width: 576px){
+  .submitBtn {
+    width: 75%;
+  }
+}

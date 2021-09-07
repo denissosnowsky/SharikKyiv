@@ -2,11 +2,19 @@
   height: 400px;
 }
 
+.imgWrapper{
+  display: flex;
+  justify-content: center;
+  height: 100%; 
+  width: 370px;
+}
+
 .image {
   height: 100%;
   width: 100%;
   object-fit: fill;
   border-radius: 15px;
+  justify-self: center;
 }
 
 .title {
@@ -59,4 +67,27 @@
 .code {
   text-align: center;
   font-size: 14px;
+}
+
+@media (max-width: 1200px){
+
+}
+
+@media (max-width: 992px){
+  .imageCol {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px){
+
+}
+
+@media (max-width: 576px){
+  .imageCol {
+    height: 200px;
+  }
+  .image {
+    width: 75%;
+  }
 }

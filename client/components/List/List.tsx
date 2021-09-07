@@ -10,7 +10,7 @@ interface ListProps {
 const List: React.FC<ListProps> = ({ data, measure }) => {
   return (
     <ListGroup variant="flush" className={s.ul}>
-      {data.length > 0 &&
+      {data && (data.length > 0 &&
         data.map((i) => (
           <ListGroup.Item className={s.li} key={i.id}>
             <span>{i.leftText}</span>
@@ -18,7 +18,7 @@ const List: React.FC<ListProps> = ({ data, measure }) => {
               {i.rightText} {measure}
             </span>
           </ListGroup.Item>
-        ))}
+        )))}
     </ListGroup>
   );
 };

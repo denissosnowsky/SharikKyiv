@@ -32,7 +32,7 @@ const DropdownBtn: React.FC<DropdownBtnProps> = ({ title, items, externalClb }) 
     >
       <Dropdown.Item onClick={handleAllBtn}>{"Все"}</Dropdown.Item>
       {items &&
-        items.length > 0 &&
+        (items.length > 0 &&
         items.map((item) => (
           <Dropdown.Item
             key={item?.id}
@@ -40,7 +40,7 @@ const DropdownBtn: React.FC<DropdownBtnProps> = ({ title, items, externalClb }) 
           >
             {item?.name}
           </Dropdown.Item>
-        ))}
+        )))}
     </DropdownButton>
   );
 };

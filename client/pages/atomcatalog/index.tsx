@@ -198,10 +198,11 @@ const AtomCatalog: ({
           <Loading />
         ) : (
           <>
-            <Row style={{ height: "60px" }}>
+            <Row >
               <Col
                 className="d-flex justify-content-center align-items-center"
-                xs={4}
+                lg={4}
+                xs={12}
               >
                 <DropdownBtn
                   title={categoryInitName!}
@@ -211,7 +212,8 @@ const AtomCatalog: ({
               </Col>
               <Col
                 className="d-flex justify-content-center align-items-center"
-                xs={4}
+                lg={4}
+                xs={12}
               >
                 <RangeInput
                   title="Макс. цена"
@@ -224,7 +226,8 @@ const AtomCatalog: ({
               </Col>
               <Col
                 className="d-flex justify-content-center align-items-center"
-                xs={4}
+                lg={4}
+                xs={12}
               >
                 <DropdownBtnWithColor
                   title={colorInitName!}
@@ -245,7 +248,7 @@ const AtomCatalog: ({
               <>
                 <Row>
                   {dataBalloons?.balloons &&
-                  dataBalloons?.balloons?.length > 0 ? (
+                  (dataBalloons?.balloons?.length > 0 ? (
                     dataBalloons?.balloons?.map((item) => (
                       <CardComponent
                         key={item?.id}
@@ -263,7 +266,7 @@ const AtomCatalog: ({
                     ))
                   ) : (
                     <div className={s.emptyData}>Таких шаров нету</div>
-                  )}
+                  ))}
                 </Row>
                 <PaginationFC
                   page={page}
