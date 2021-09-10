@@ -6,7 +6,7 @@ interface VideoProps {
   shadow?: boolean;
 }
 
-const Video: React.FC<VideoProps> = memo(({ src, shadow, children }) => {
+function Video({ src, shadow, children }: VideoProps & {children: React.ReactNode}){
   return (
     <>
       <video className={s.video} autoPlay muted loop>
@@ -16,6 +16,6 @@ const Video: React.FC<VideoProps> = memo(({ src, shadow, children }) => {
       {children}
     </>
   );
-});
+};
 
 export default Video;

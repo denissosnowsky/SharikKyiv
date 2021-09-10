@@ -10,15 +10,12 @@ import {
   usePhonesQuery,
   useSocialNetsQuery,
 } from "../../../store/generated/graphql";
-import { memo, ReactNode, useState } from "react";
+import { memo, ReactNode, SFC, useState } from "react";
 import { showError } from "../../../utils/showError";
 import NavC from "../../NavC/NavC";
 
-interface NavBarProps {
-  title: string;
-}
 
-const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
+const NavBar = ({ children, title }: {children?: React.ReactNode, title: string}): JSX.Element => {
   const [pushMobileMenu, setPushMobileMenu] = useState(false);
 
   const {
@@ -36,7 +33,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
   if (errorPhone || errorSocial) {
     console.log(errorPhone);
     console.log(errorSocial);
-    return showError("Ошибка. Перезагрузите пожалуйста страницу");
+    showError("Ошибка. Перезагрузите пожалуйста страницу");
   }
 
   return (
@@ -109,6 +106,6 @@ const NavBar: React.FC<NavBarProps> = memo(({ children, title }) => {
       </div>
     </>
   );
-});
+};
 
 export default NavBar;

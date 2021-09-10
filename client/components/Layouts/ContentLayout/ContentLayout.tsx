@@ -1,9 +1,7 @@
 import { memo } from "react";
 import s from "./ContentLayout.module.css";
 
-interface ContentLayoutProps {}
-
-const ContentLayout: React.FC<ContentLayoutProps> = memo(({ children }) => {
+function ContentLayout({ children }){
   return (
     <div className={s.layout}>
       {children}
@@ -12,6 +10,6 @@ const ContentLayout: React.FC<ContentLayoutProps> = memo(({ children }) => {
       </div>
     </div>
   );
-});
+};
 
 export default ContentLayout;

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { ApolloServer } from "apollo-server-express";
 import config from "config";
 import schema from "./grapgql/schema/schema";
@@ -11,6 +11,7 @@ import { graphqlUploadExpress } from "graphql-upload";
 import * as path from "path";
 import { Storage } from "@google-cloud/storage";
 import cors from "cors";
+
 
 async function start() {
   try {
@@ -37,34 +38,35 @@ async function start() {
       context,
     });
 
-    const app = express();
+      const app = express();
 
-    const whitelist: Array<string> = [
-      config.get("clientUrlhttp"),
-      config.get("clientUrlhttps"),
-      config.get("adminUrl"),
-    ];
-    const corsOptions = {
-      origin: whitelist
-    };
-    /* app.use(cors(corsOptions)); */
+      const whitelist: Array<string> = [
+        config.get("clientUrlhttp"),
+        config.get("clientUrlhttps"),
+        config.get("adminUrl"),
+      ];
+      const corsOptions = {
+        origin: whitelist,
+      };
+      /* app.use(cors(corsOptions)); */
 
-    await server.start();
+      await server.start();
 
-    app.use(graphqlUploadExpress());
+      app.use(graphqlUploadExpress());
 
-    /* if (process.env.NODE_ENV === "production") {
+console.log(path.resolve(__dirname));
+      /* if (process.env.NODE_ENV === "production") {
       app.use("/", express.static(path.join(__dirname, "client", "build")));
       app.get("*", (req, res) => {
         res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
       });
     } */
 
-    server.applyMiddleware({ app });
+      server.applyMiddleware({ app });
 
-    app.listen(PORT, () =>
-      console.log(`App has been started on port ${PORT}...`)
-    );
+      app.listen(PORT, () =>
+        console.log(`App has been started on port ${PORT}...`)
+      );
   } catch (e) {
     console.log("Server Error", e.message);
     process.exit(1);

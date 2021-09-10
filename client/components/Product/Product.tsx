@@ -75,13 +75,13 @@ const Product: React.FC<ProductProps> = ({
           <Counter
             minValue={1}
             start={
-              basketStatus.isInBasket ? basketStatus.basketQuantity : undefined
+              basketStatus && (basketStatus.isInBasket ? basketStatus.basketQuantity : undefined)
             }
             clb={fetchCurrentCount}
           />
         </div>
         <div className={s.btnWrapper}>
-          {basketStatus.isInBasket ? (
+          {(basketStatus && basketStatus.isInBasket) ? (
             <Button
               variant="success"
               className={cs([s.button], "m-1")}

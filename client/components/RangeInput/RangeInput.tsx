@@ -14,8 +14,7 @@ interface MouseEventExt extends MouseEvent<HTMLInputElement> {
   target: EventTarget & HTMLInputElement;
 }
 
-const RangeInput: React.FC<RangeInputProps> = memo(
-  ({ min, max, step, title, start, externalClb }) => {
+function RangeInput({ min, max, step, title, start, externalClb}: RangeInputProps){
     const [price, setPrice] = useState(start);
     const handlePrice = (e: ChangeEvent<HTMLInputElement>) => {
       setPrice(Number(e.target.value));
@@ -44,7 +43,6 @@ const RangeInput: React.FC<RangeInputProps> = memo(
         <div className="ms-1">0 - {price} грн.</div>
       </div>
     );
-  }
-);
+  };
 
 export default RangeInput;

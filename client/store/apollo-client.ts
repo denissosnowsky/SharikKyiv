@@ -9,7 +9,7 @@ import { basketVar } from "./variables";
 import { ReadFieldFunction } from "@apollo/client/cache/core/types/common";
 
 const isServer = typeof window === "undefined";
-
+//@ts-ignore
 const windowApolloState = !isServer && window.__NEXT_DATA__.apolloState;
 
 let CLIENT: ApolloClient<NormalizedCacheObject>;

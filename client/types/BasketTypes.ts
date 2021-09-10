@@ -8,7 +8,7 @@ export type BasketStatusType = Maybe<{
 export type BasketObjType = {
   leftText: string;
   rightText: string;
-  id: number;
+  id: string;
   image: string;
   description: string;
   quantity: number;
