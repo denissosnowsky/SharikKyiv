@@ -54,7 +54,7 @@ async function start() {
 
       app.use(graphqlUploadExpress());
 
-console.log(path.resolve(__dirname));
+console.log(path.join(__dirname, '../../', 'admin', 'build'));
       /* if (process.env.NODE_ENV === "production") {
       app.use("/", express.static(path.join(__dirname, "client", "build")));
       app.get("*", (req, res) => {
