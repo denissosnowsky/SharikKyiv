@@ -12,7 +12,6 @@ import * as path from "path";
 import { Storage } from "@google-cloud/storage";
 import cors from "cors";
 
-
 async function start() {
   try {
     const PORT = process.env.PORT || config.get("port");
@@ -38,35 +37,39 @@ async function start() {
       context,
     });
 
-      const app = express();
+    const app = express();
 
-      const whitelist: Array<string> = [
-        config.get("clientUrlhttp"),
-        config.get("clientUrlhttps"),
-        config.get("adminUrl"),
-      ];
-      const corsOptions = {
-        origin: whitelist,
-      };
-      /* app.use(cors(corsOptions)); */
+    const whitelist: Array<string> = [
+      config.get("clientUrlhttp"),
+      config.get("clientUrlhttps"),
+      config.get("adminUrl"),
+    ];
+    const corsOptions = {
+      origin: whitelist,
+    };
+    app.use(cors(corsOptions));
 
-      await server.start();
+    await server.start();
 
-      app.use(graphqlUploadExpress());
+    app.use(graphqlUploadExpress());
 
-console.log(path.join(__dirname, '../../', 'admin', 'build'));
-      /* if (process.env.NODE_ENV === "production") {
-      app.use("/", express.static(path.join(__dirname, "client", "build")));
-      app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-      });
-    } */
-
-      server.applyMiddleware({ app });
-
-      app.listen(PORT, () =>
-        console.log(`App has been started on port ${PORT}...`)
+    if (process.env.NODE_ENV === "production") {
+      app.use(
+        "/",
+        express.static(path.join(__dirname, "../../", "admin", "build"))
       );
+      app.get("*", (req, res) => {
+        res.sendFile(
+          path.resolve(__dirname, "../../", "admin", "build", "index.html")
+        );
+      });
+    }
+
+    server.applyMiddleware({ app });
+
+    app.listen(PORT, () =>
+      console.log(`App has been started on port ${PORT}...`)
+    );
   } catch (e) {
     console.log("Server Error", e.message);
     process.exit(1);
